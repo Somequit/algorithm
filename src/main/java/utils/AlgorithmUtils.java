@@ -16,11 +16,16 @@ public class AlgorithmUtils {
     public static int[] systemInArray(){
         Scanner sc = new Scanner(System.in);
         System.out.print("请输入数组的个数:");
+
         int length = sc.nextInt();
+        sc.nextLine();
         int[] array = new int[length];
-        for(int i=0;i<length;i++){
-            int temp = sc.nextInt();
-            array[i] = temp;
+
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs = arrayStr.split(" ");
+
+        for (int i = 0; i < length; i++) {
+            array[i] = Integer.parseInt(arrayStrs[i]);
         }
         return array;
     }
