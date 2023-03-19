@@ -3,10 +3,8 @@ package utils;
 import leetcode.ListNode;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AlgorithmUtils {
 
@@ -307,5 +305,33 @@ public class AlgorithmUtils {
         }
 
         return virtual.getNext();
+    }
+
+    /**
+     * 通过 List 建树，数组是树的层序方式，如果父节点存在、但子节点存在零个或一个则使用 null 表示
+     */
+    public static TreeNode createTree(List<Integer> treeList) {
+        if (CollectionUtils.isEmpty(treeList)) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(treeList.get(0));
+        Queue<TreeNode> treeNodeQueue = new ConcurrentLinkedQueue<>();
+        treeNodeQueue.add(root);
+        for (int i = 1; i < treeList.size(); i += 2) {
+            TreeNode nowNode = treeNodeQueue.poll();
+
+            if (treeList.get(i) != null) {
+                nowNode.left = new TreeNode(treeList.get(i));
+                treeNodeQueue.add(nowNode.left);
+            }
+            if (i + 1 < treeList.size() && treeList.get(i + 1) != null) {
+                nowNode.right = new TreeNode(treeList.get(i + 1));
+                treeNodeQueue.add(nowNode.right);
+            }
+
+        }
+
+        return root;
     }
 }
