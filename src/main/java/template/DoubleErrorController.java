@@ -1,4 +1,4 @@
-package interview;
+package template;
 
 /**
  * 浮点数计算，控制误差
