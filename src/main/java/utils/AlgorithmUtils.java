@@ -13,7 +13,7 @@ public class AlgorithmUtils {
      */
     public static int[] systemInArray(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("请输入数组的个数:");
+        System.out.print("请输入数组的个数（数字以空格区分）:");
 
         int length = sc.nextInt();
         sc.nextLine();
@@ -33,13 +33,17 @@ public class AlgorithmUtils {
      */
     public static List<Integer> systemInList(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("请输入容器的个数（换行区分）:");
+        System.out.print("请输入容器的个数（数字以空格区分）:");
+
         int length = sc.nextInt();
         sc.nextLine();
         List<Integer> list = new ArrayList<>(length);
+
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs = arrayStr.split(" ");
+
         for(int i=0; i<length; i++){
-            String temp = sc.nextLine();
-            list.add((temp == null || temp.length() == 0) ? null : Integer.valueOf(temp));
+            list.add("null".equals(arrayStrs[i]) ? null : Integer.parseInt(arrayStrs[i]));
         }
         return list;
     }
@@ -308,6 +312,7 @@ public class AlgorithmUtils {
     }
 
     /**
+     * TreeNode 专用
      * 通过 List 建树，数组是树的层序方式，如果父节点存在、但子节点存在零个或一个则使用 null 表示
      */
     public static TreeNode createTree(List<Integer> treeList) {
