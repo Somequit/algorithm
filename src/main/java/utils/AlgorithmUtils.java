@@ -76,6 +76,30 @@ public class AlgorithmUtils {
     }
 
     /**
+     * 输出二维数组
+     */
+    public static void systemOutArray(int[][] array){
+        if(array == null){
+            throw new RuntimeException("array is null!");
+        }
+        for (int[] anArray : array) {
+            System.out.println(Arrays.toString(anArray));
+        }
+    }
+
+    /**
+     * 输出二维数组
+     */
+    public static void systemOutArray(boolean[][] array){
+        if(array == null){
+            throw new RuntimeException("array is null!");
+        }
+        for (boolean[] anArray : array) {
+            System.out.println(Arrays.toString(anArray));
+        }
+    }
+
+    /**
      * 输出数组
      */
     public static void systemOutArray(String[] array, String delimiter){
@@ -248,10 +272,14 @@ public class AlgorithmUtils {
         System.out.print("请输入数组的列数:");
         int cols = sc.nextInt();
         int[][] array = new int[row][cols];
-        for(int i=0;i<row;i++){
-            for(int j=0;j<cols;j++){
-                int temp = sc.nextInt();
-                array[i][j] = temp;
+
+        sc.nextLine();
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs = arrayStr.split(" ");
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < cols; j++) {
+                array[i][j] = Integer.parseInt(arrayStrs[i * cols + j]);
             }
         }
         return array;
