@@ -29,6 +29,26 @@ public class AlgorithmUtils {
     }
 
     /**
+     * 输入数组
+     */
+    public static double[] systemInArrayDouble(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("请输入数组的个数（数字以空格区分）:");
+
+        int length = sc.nextInt();
+        sc.nextLine();
+        double[] array = new double[length];
+
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs = arrayStr.split(" ");
+
+        for (int i = 0; i < length; i++) {
+            array[i] = Double.parseDouble(arrayStrs[i]);
+        }
+        return array;
+    }
+
+    /**
      * 输入List
      */
     public static List<Integer> systemInList(){
@@ -280,6 +300,29 @@ public class AlgorithmUtils {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < cols; j++) {
                 array[i][j] = Integer.parseInt(arrayStrs[i * cols + j]);
+            }
+        }
+        return array;
+    }
+
+    /**
+     * 输入二维数组
+     */
+    public static String[][] systemInTwoArrayString(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("请输入数组的行数:");
+        int row = sc.nextInt();
+        System.out.print("请输入数组的列数:");
+        int cols = sc.nextInt();
+        String[][] array = new String[row][cols];
+
+        sc.nextLine();
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs = arrayStr.split(" ");
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < cols; j++) {
+                array[i][j] = arrayStrs[i * cols + j];
             }
         }
         return array;
