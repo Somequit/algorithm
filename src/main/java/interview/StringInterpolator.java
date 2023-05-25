@@ -96,13 +96,13 @@ public class StringInterpolator {
         Deque<Integer> leftIndexStack = new ArrayDeque<>(content.length() >> 1);
         while (indexLeft != -1 || indexRight != -1) {
 
-            // 右括号在前面则弹出栈顶，找下一个右括号
+            // If the "}}" is in front, pop the top of the stack and look for the next "}}"
             if (indexLeft == -1 || (indexRight != -1 && indexRight < indexLeft)) {
-                // 栈为空，右括号取左括号后面
+                // If the stack is empty, take the "}}" after the "{{"
                 if (leftIndexStack.isEmpty()) {
                     indexRight = contentBuffer.indexOf("}}", indexRight + 2);
 
-                // 栈非空则出栈，替换结果，左右括号都要更新
+                // If the stack is not empty, pop it, replace the result, and update both "}}" and "{{"
                 } else {
                     int indexLeftTemp = leftIndexStack.pollFirst();
                     interpolationBracket(contentBuffer, indexLeftTemp, indexRight, values);
@@ -110,7 +110,7 @@ public class StringInterpolator {
                     indexRight = contentBuffer.indexOf("}}", indexLeftTemp);
                 }
 
-            // 左括号在前面则入栈，找下一个左括号
+            // If the "{{" is in front, push it onto the stack and look for the next "{{"
             } else {
                 leftIndexStack.offerFirst(indexLeft);
                 indexLeft = contentBuffer.indexOf("{{", indexLeft + 2);
