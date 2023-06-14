@@ -140,18 +140,67 @@ public class LongestConsecutive {
     }
 
     /**
-     * 哈希优化：上一个
-     *
+     * 哈希优化：上述 HashMap 仅存储端点、因此不方便去重还需要删除中间节点，如果存储所有元素、那么就不需要删除节点同时直接可以判断去重，
+     * HashMap 中 key 代表每个元素，如果该元素为左/右端点、value 为从左到右的元素个数，如果该元素为中间节点、value 为它作为端点时的元素个数、此时该元素在新增时并不会被用到（仅用于去重）
+     * 具体插入方式：
+     *     判断 num 是否添加过，添加过则不再添加，
+     *     否则查询 num-1 与 num+1 的 value 值、空则返回 0，此时 num-1 如果非空则一定是区间右端点、num+1 非空则一定是左端点（不是端点则代表一定包含 num，这与前面的去重冲突），
+     *     接着更新左右端点的值，
+     *     然后将 num 加入哈希、value 任意（要么 num 不是端点、要么已更新了），
+     *     最后更新结果值、在其与左/右端点 value 取最大值
      * 时间复杂度：O（n），空间复杂度：O（n）
      * @param nums
      * @return
      */
     public int solution2(int[] nums) {
         // 判空
+        if (nums == null || nums.length <= 0) {
+            return 0;
+        }
 
-        //
+        // 初始化 HashMap，所有元素最多添加一次、避免扩容
+        int len = nums.length;
+        Map<Integer, Integer> consecutiveMap = new HashMap<>((len / 3) << 2);
 
-        return 0;
+        // 依次加入元素
+        int res = doLongestConsecutive2(nums, len, consecutiveMap);
+
+        return res;
+    }
+
+    /**
+     * 具体插入方式：
+     *     判断 num 是否添加过，添加过则不再添加，
+     *     否则查询 num-1 与 num+1 的 value 值、空则返回 0，此时 num-1 如果非空则一定是区间右端点、num+1 非空则一定是左端点（不是端点则代表一定包含 num，这与前面的去重冲突），
+     *     接着将 num 加入哈希、value 任意（要么 num 不是端点、要么是端点但后面会更新）
+     *     然后更新左右端点的值，
+     *     最后更新结果值、在其与左/右端点 value 取最大值
+     */
+    private int doLongestConsecutive2(int[] nums, int len, Map<Integer,Integer> consecutiveMap) {
+        int res = 0;
+        for (int num : nums) {
+            // 判断 num 是否添加过，添加过则不再添加
+            if (consecutiveMap.containsKey(num)) {
+                continue;
+            }
+
+            // 查询 num-1 与 num+1 的 value 值、空则返回 0
+            int previous = consecutiveMap.getOrDefault(num - 1, 0);
+            int next = consecutiveMap.getOrDefault(num + 1, 0);
+
+            // 将 num 加入哈希、value 任意（要么 num 不是端点、要么是端点但后面会更新）
+            consecutiveMap.put(num, -1);
+
+            // 更新左右端点的值
+            int current = previous + next + 1;
+            consecutiveMap.put(num - previous, current);
+            consecutiveMap.put(num + next, current);
+
+            // 更新结果值、在其与左/右端点 value 取最大值
+            res = Math.max(res, current);
+        }
+
+        return res;
     }
 
     /**
