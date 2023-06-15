@@ -3,7 +3,9 @@ package leetcode.medium;
 import utils.AlgorithmUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author gusixue
@@ -17,6 +19,9 @@ import java.util.Map;
  */
 public class LongestConsecutive {
 
+    /**
+     * 首先可以想到如果排序好数组、那么可以使用双指针的方式计数连续值，但时间复杂度超了，因此从连续方向考虑：每个元素 num 使用哈希搜索 num+1、num+2...
+     */
     public static void main(String[] args) {
         LongestConsecutive longestConsecutive = new LongestConsecutive();
         while (true) {
@@ -36,7 +41,6 @@ public class LongestConsecutive {
     }
 
     /**
-     * 首先可以想到如果排序好数组、那么可以使用双指针的方式计数连续值，但时间复杂度超了，因此从连续方向考虑：每个元素 num 使用哈希搜索 num+1、num+2...
      * 哈希：每个元素放入依次 HashMap 中，HashMap 中 key 存放（多个）连续一段数的头与尾元素（如果仅一个元素就只存当前元素与 0）、
      * value 存放该段另一端减去 key 的大小（num+value 与 num 形成闭区间，key 为端头 value 为正数、key 为端尾 value 为负数），
      * 具体插入方式：先不考虑重复元素，每个元素 num 存入前，搜其是否为某段最后一个节点的后一个元素、某段第一个节点的前一个元素，此时有四种情况，如下：
@@ -204,22 +208,76 @@ public class LongestConsecutive {
     }
 
     /**
-     * 并查集：
-     *
+     * 哈希 + 贪心：按照 num 连续的方式换一种思路，首先我们思考暴力：将元素全部放入哈希中，接着遍历每一个 num，每个 num 搜索 num+1、num+2... 直到结束，
+     * 这样时间复杂度为O（n^2），但是仔细思考可知：每个大于 1 个元素的连续区间，我们重复遍历了多次；因此考虑如何让每个连续区间只搜索一次，上面的方式可看做使用了记忆化搜索，
+     * 除此之外每个连续区间均从最小的 num 开始，这样就不需要让该连续区间大于 num 的元素搜索一遍了，问题转化为：如何在遍历时、O（1）复杂度确认 num 是否为该连续区间最小值，
+     * 解法：遍历时判断 num-1 是否存在哈希中，如果不存在则代表 num 是该连续区间的最小值、此时使用 num 搜索整个连续区间的个数，如果存在则不需要搜索
      * 时间复杂度：O（n），空间复杂度：O（n）
      * @param nums
      * @return
      */
     public int solution3(int[] nums) {
         // 判空
+        if (nums == null || nums.length <= 0) {
+            return 0;
+        }
 
-        //
+        // 元素存入哈希，哈希仅用于校验是否存在
+        Set<Integer> numsSet = putNumsIntoSet(nums);
+//        System.out.println(numsSet);
 
-        return 0;
+        // 遍历元素，并保证每个连续区间均从最小的 num 开始搜索
+        int res = doLongestConsecutive3(nums, numsSet);
+
+        return res;
     }
 
     /**
-     * 哈希 + 贪心：
+     * 元素存入哈希
+     */
+    private Set<Integer> putNumsIntoSet(int[] nums) {
+        // 初始化 HashSet，所有元素最多添加一次、避免扩容
+        int len = nums.length;
+        Set<Integer> consecutiveSet = new HashSet<>((len / 3) << 2);
+
+        for (int num : nums) {
+            consecutiveSet.add(num);
+        }
+
+        return consecutiveSet;
+    }
+
+    /**
+     * 遍历元素，并保证每个连续区间均从最小的 num 开始搜索
+     */
+    private int doLongestConsecutive3(int[] nums, Set<Integer> numsSet) {
+        // 最少一个元素
+        int res = 1;
+
+        // 遍历去重后的集合
+        for (int num : numsSet) {
+            // 判断 num-1 存在哈希，直接往后遍历
+            if (numsSet.contains(num - 1)) {
+                continue;
+            }
+
+//            System.out.println(num);
+
+            // 判断 num-1 不存在哈希，代表连续区间头元素，搜索整个区间
+            int next = num + 1;
+            while (numsSet.contains(next)) {
+                next++;
+            }
+
+            // 校验结果
+            res = Math.max(res, next - num);
+        }
+
+        return res;
+    }
+
+    /**
+     * 并查集：
      *
      * 时间复杂度：O（n），空间复杂度：O（n）
      * @param nums
@@ -227,6 +285,9 @@ public class LongestConsecutive {
      */
     public int solution4(int[] nums) {
         // 判空
+        if (nums == null || nums.length <= 0) {
+            return 0;
+        }
 
         //
 
