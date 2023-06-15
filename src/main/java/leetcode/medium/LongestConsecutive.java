@@ -279,11 +279,10 @@ public class LongestConsecutive {
     /**
      * 哈希 + 带权并查集：考虑搜索连续区间可以使用带权并查集，连续的元素合并时小值指向大值，由于合并是俩根节点结合，因此仅需要保证根节点的权值代表连续区间的元素个数集合，
      * 同时注意每次合并时仅更新根节点权值，路径压缩时不需要更新权值，
-     * 具体方式：现将所有元素放入哈希指向自己，然后遍历每个 num，如果 num-1 存在、则判断其与 num 的根节点是否相同，不同则合并、根节点权值 +1，
-     * 如果 num+1 存在、则判断其与 num 的根节点是否相同，不同则合并、根节点权值 +1，结尾是根节点的最大权值
+     * 具体方式：现将所有元素放入哈希指向自己，然后遍历每个 num，如果 num+1 存在、则判断其与 num 的根节点是否相同，不同则合并、根节点权值 +1，
+     * 结尾是根节点的最大权值，
+     * 注意：由于搜索 num+1 是在全量中搜的，所以不需要合并 num-1，因为（num-1,num）这种情况会在求（num-1,num-1 + 1）时解决
      * 带路径压缩的并查集合并的 α(n) 为不超过 4，时间复杂度：O（α(n)*n），空间复杂度：O（n）
-     * @param nums
-     * @return
      */
     public int solution4(int[] nums) {
         // 判空
@@ -315,13 +314,13 @@ public class LongestConsecutive {
         // 遍历任一哈希，减少重复元素校验，同时哈希创建好后只修改不会更改结构
         for (Integer num : weightMap.keySet()) {
 
-            // 校验 num-1 存在，同时俩根节点不同则允许则合并 num 和 num-1 的根节点（小值指向大值），返回根节点权值
-            int ans = unionFind(num, num-1, parentMap, weightMap);
-            // 更新结果
-            res = Math.max(res, ans);
+//            // 校验 num-1 存在，同时俩根节点不同则允许则合并 num 和 num-1 的根节点（小值指向大值），返回根节点权值
+//            int ans = unionFind(num, num-1, parentMap, weightMap);
+//            // 更新结果
+//            res = Math.max(res, ans);
 
             // 校验 num+1 存在，同时俩根节点不同则允许则合并 num 和 num+1 的根节点（小值指向大值），返回根节点权值
-            ans = unionFind(num, num+1, parentMap, weightMap);
+            int ans = unionFind(num, num+1, parentMap, weightMap);
             // 更新结果
             res = Math.max(res, ans);
         }
