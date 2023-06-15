@@ -277,9 +277,11 @@ public class LongestConsecutive {
     }
 
     /**
-     * 并查集：
-     *
-     * 时间复杂度：O（n），空间复杂度：O（n）
+     * 哈希 + 带权并查集：考虑搜索连续区间可以使用带权并查集，连续的元素合并时小值指向大值，由于合并是俩根节点结合，因此仅需要保证根节点的权值代表连续区间的元素个数集合，
+     * 同时注意每次合并时仅更新根节点权值，路径压缩时不需要更新权值，
+     * 具体方式：现将所有元素放入哈希指向自己，然后遍历每个 num，如果 num-1 存在、则判断其与 num 的根节点是否相同，不同则合并、根节点权值 +1，
+     * 如果 num+1 存在、则判断其与 num 的根节点是否相同，不同则合并、根节点权值 +1，结尾是根节点的最大权值
+     * 带路径压缩的并查集合并的 α(n) 为不超过 4，时间复杂度：O（α(n)*n），空间复杂度：O（n）
      * @param nums
      * @return
      */
@@ -289,8 +291,125 @@ public class LongestConsecutive {
             return 0;
         }
 
-        //
+        // 创建哈希的并查集同时初始化，nums 所有元素指向自己
+        int len = nums.length;
+        Map<Integer, Integer> parentMap = initUnionFind(nums, len);
+        // 所有元素权值设为 1
+        Map<Integer, Integer> weightMap = initUnionFindWeight(nums, len);
 
-        return 0;
+        // System.out.println(parentMap + " : " + weightMap);
+
+        // 连续的元素合并时小值指向大值，由于合并是俩根节点结合，因此仅需要保证根节点的权值代表连续区间的元素个数集合
+        int res = doLongestConsecutive4(parentMap, weightMap);
+
+        return res;
+    }
+
+    /**
+     * 连续的元素合并时小值指向大值，由于合并是俩根节点结合，因此仅需要保证根节点的权值代表连续区间的元素个数集合
+     */
+    private int doLongestConsecutive4(Map<Integer,Integer> parentMap, Map<Integer,Integer> weightMap) {
+        // 结果最小为 1
+        int res = 1;
+
+        // 遍历任一哈希，减少重复元素校验，同时哈希创建好后只修改不会更改结构
+        for (Integer num : weightMap.keySet()) {
+
+            // 校验 num-1 存在，同时俩根节点不同则允许则合并 num 和 num-1 的根节点（小值指向大值），返回根节点权值
+            int ans = unionFind(num, num-1, parentMap, weightMap);
+            // 更新结果
+            res = Math.max(res, ans);
+
+            // 校验 num+1 存在，同时俩根节点不同则允许则合并 num 和 num+1 的根节点（小值指向大值），返回根节点权值
+            ans = unionFind(num, num+1, parentMap, weightMap);
+            // 更新结果
+            res = Math.max(res, ans);
+        }
+
+        return res;
+    }
+
+    /**
+     * 校验 other 存在，同时俩根节点不同则允许则合并 current 和 other 的根节点（小值指向大值），返回根节点权值
+     */
+    private int unionFind(int current, int other, Map<Integer,Integer> parentMap, Map<Integer,Integer> weightMap) {
+        // other 存在才可能合并
+        if (!weightMap.containsKey(other)) {
+            return weightMap.get(current);
+        }
+
+        // 获取 current 与 other 的根节点
+        int currentParent = find(current, parentMap);
+        int otherParent = find(other, parentMap);
+//        System.out.println("current : " + current + " : " + currentParent);
+//        System.out.println("other : " + other + " : " + otherParent);
+
+        // 俩根节点不同则合并 current 与 other（小值指向大值），根节点权值 +1
+        if (currentParent != otherParent) {
+            // 返回根节点
+            int parent = union(currentParent, otherParent, parentMap, weightMap);
+//            System.out.println(parentMap + " : " + weightMap);
+            return weightMap.get(parent);
+        }
+
+        return weightMap.get(currentParent);
+    }
+
+    /**
+     * 获取元素的根节点，同时路径压缩
+     */
+    private int find(int son, Map<Integer,Integer> parentMap) {
+        if (son == parentMap.get(son)) {
+            return son;
+        }
+
+        int father = parentMap.get(son);
+        int parent = find(father, parentMap);
+        // 路径压缩
+        parentMap.put(son, parent);
+        return parent;
+    }
+
+    /**
+     * 合并 current 与 other（小值指向大值），根节点权值 +1，返回根节点
+     */
+    private int union(int current, int other, Map<Integer,Integer> parentMap, Map<Integer,Integer> weightMap) {
+        if (current < other) {
+            parentMap.put(current, other);
+            weightMap.put(other, weightMap.get(other) + weightMap.get(current));
+            return other;
+        } else {
+            parentMap.put(other, current);
+            weightMap.put(current, weightMap.get(other) + weightMap.get(current));
+            return current;
+        }
+    }
+
+    /**
+     * 创建哈希的并查集同时初始化，nums 所有元素指向自己
+     */
+    private Map<Integer,Integer> initUnionFind(int[] nums, int len) {
+        // 所有元素最多添加一次、避免扩容
+        Map<Integer, Integer> parentMap = new HashMap<>((len / 3) << 2);
+
+        for (int num : nums) {
+            parentMap.put(num, num);
+        }
+
+        return parentMap;
+    }
+
+    /**
+     * 创建哈希的并查集同时初始化，所有元素权值设为 1
+     */
+    private Map<Integer,Integer> initUnionFindWeight(int[] nums, int len) {
+        // 所有元素最多添加一次、避免扩容
+        Map<Integer, Integer> weightMap = new HashMap<>((len / 3) << 2);
+
+        for (int num : nums) {
+            weightMap.put(num, 1);
+        }
+
+        return weightMap;
     }
 }
