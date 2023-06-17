@@ -13,7 +13,7 @@ import utils.TreeNode;
  * 返回合并后的二叉树。
  * 注意: 合并过程必须从两个树的根节点开始。
  * 两棵树中的节点数目在范围 [0, 2000] 内
- * -104 <= Node.val <= 104
+ * -10^4 <= Node.val <= 10^4
  * @date 2023/6/17
  */
 public class MergeTrees {
