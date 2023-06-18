@@ -2,7 +2,7 @@ package leetcode.contest.contest_350;
 
 import utils.AlgorithmUtils;
 
-import java.util.Arrays;
+import java.util.*;
 
 
 /**
@@ -24,6 +24,9 @@ public class Contest3 {
             int[] nums = AlgorithmUtils.systemInArray();
 
             int res = contest.solution(nums);
+            System.out.println(res);
+
+            int res2 = contest.solutionOptimization(nums);
             System.out.println(res);
         }
 
@@ -163,4 +166,101 @@ public class Contest3 {
         return dp[perm][start][end];
     }
 
+    /**
+     * 在上述基础上，由于 dp[1<<k][k][k] 其实就是 1，同时可以看做每次添加一个元素，因此可以省掉一维
+     * 定义状态：dp[i][j] 中 i 定义不变，j 代表最后一个元素为 nums[j] 的排列数
+     * 初始化： 所有元素为 0
+     * 转移方程：当 i 的二进制仅有一个 1 时、仅 dp[i][logi] = 1 其他为 0，
+     * 否则 dp[i][j] += dp[i-(1<<l)][l] nums[l] 是与 nums[j] 余数为 0 的一系列数，同时 l 必须存在 i 转化为的二进制位中
+     * 结果：当 i 在二进制下所有值都是 1 的情况下，所有 j 之和
+     * 时间复杂度：O（2^n*n^2），空间复杂度：O（2^n*n^2）
+     */
+    private int solutionOptimization(int[] nums) {
+        int mod = 1_000_000_007;
+
+        int len = nums.length;
+        // 与每一位 i 余数为 0 的下标存入 Set[]
+        Set<Integer>[] specialSet = getSpecialSet(nums, len);
+//        System.out.println(Arrays.toString(specialSet));
+
+        // 将二进制的仅一位 1 的值存入 key、1 存在第几位存入 value（从 0 开始）
+        Map<Integer, Integer> binaryIndexMap = getBinaryIndexMap(len);
+//        System.out.println(binaryIndexMap);
+
+        // 状压所有元素的最大值（全为 1 的值）
+        int permTotal = (1 << len) - 1;
+
+        // 定义与初始化 DP
+        int[][] dp = new int[permTotal + 1][len];
+        dp[1][0] = 1;
+
+        int res = 0;
+        // 循环进行状态转移
+        for (int i = 1; i < permTotal + 1; i++) {
+            // 当 i 的二进制仅有一个 1 时
+            if (i - lowbit(i) == 0) {
+                dp[i][binaryIndexMap.get(i)] = 1;
+
+            } else {
+
+                for (int j = 0; j < len; j++) {
+                    // j 必须存在 i 转化为的二进制位中
+                    if ((i & (1 << j)) > 0) {
+                        // nums[k] 是与 nums[j] 余数为 0 的一系列数
+                        for (Integer special : specialSet[j]) {
+                            // special 必须存在 i 转化为的二进制位中
+                            if ((i & (1 << special)) > 0) {
+                                dp[i][j] = (dp[i][j] + dp[i - (1 << j)][special]) % mod;
+                            }
+                        }
+                    }
+                    if (i == permTotal) {
+                        res = (res + dp[i][j]) % mod;
+                    }
+                }
+            }
+        }
+
+//        for (int i = 0; i < dp.length; i++) {
+//            System.out.println(Arrays.toString(dp[i]));
+//        }
+
+        return res;
+    }
+
+    /**
+     * 将二进制的仅一位 1 的值存入 key、1 存在第几位存入 value（从 0 开始）
+     */
+    private Map<Integer,Integer> getBinaryIndexMap(int total) {
+        Map<Integer, Integer> binaryIndexMap = new HashMap<>();
+
+        int key = 1;
+        for (int i = 0; i < total; i++) {
+            binaryIndexMap.put(key, i);
+            key <<= 1;
+        }
+
+        return binaryIndexMap;
+    }
+
+
+    /**
+     * 与每一位 i 余数为 0 的下标存入 Set[]
+     */
+    private Set<Integer>[] getSpecialSet(int[] nums, int len) {
+        Set<Integer>[] specialSet = new HashSet[len];
+        for (int i = 0; i < len; i++) {
+            specialSet[i] = new HashSet<Integer>();
+        }
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                if (i != j && (nums[i] % nums[j] == 0 || nums[j] % nums[i] == 0)) {
+                    specialSet[i].add(j);
+                }
+            }
+        }
+
+        return specialSet;
+    }
 }
