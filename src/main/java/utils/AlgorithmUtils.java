@@ -49,6 +49,23 @@ public class AlgorithmUtils {
     }
 
     /**
+     * 输入数组
+     */
+    public static String[] systemInArrayString(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("请输入数组的个数（数字以空格区分）:");
+
+        int length = sc.nextInt();
+        sc.nextLine();
+        String[] array = new String[length];
+
+        for (int i = 0; i < length; i++) {
+            array[i] = sc.nextLine();
+        }
+        return array;
+    }
+
+    /**
      * 输入List
      */
     public static List<Integer> systemInList(){
