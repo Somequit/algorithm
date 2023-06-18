@@ -173,7 +173,7 @@ public class Contest3 {
      * 转移方程：当 i 的二进制仅有一个 1 时、仅 dp[i][logi] = 1 其他为 0，
      * 否则 dp[i][j] += dp[i-(1<<l)][l] nums[l] 是与 nums[j] 余数为 0 的一系列数，同时 l 必须存在 i 转化为的二进制位中
      * 结果：当 i 在二进制下所有值都是 1 的情况下，所有 j 之和
-     * 时间复杂度：O（2^n*n^2），空间复杂度：O（2^n*n^2）
+     * 时间复杂度：O（2^n*n^2），空间复杂度：O（2^n*n）
      */
     private int solutionOptimization(int[] nums) {
         int mod = 1_000_000_007;
