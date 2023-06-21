@@ -119,9 +119,7 @@ public class AlgorithmUtils {
         if(array == null){
             throw new RuntimeException("array is null!");
         }
-        for (int[] anArray : array) {
-            System.out.println(Arrays.toString(anArray));
-        }
+        Arrays.stream(array).forEach(t -> System.out.println(Arrays.toString(t)));
     }
 
     /**
