@@ -15,6 +15,9 @@ import java.util.stream.IntStream;
  * 56. 合并区间
  * 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。
  * 请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+ * 1 <= intervals.length <= 10^4
+ * intervals[i].length == 2
+ * 0 <= starti <= endi <= 10^4
  * @date 2023/6/21
  */
 public class Merge {
@@ -70,13 +73,17 @@ public class Merge {
             public int compare(int[] o1, int[] o2) {
                 if (o1[0] > o2[0]) {
                     return 1;
+
                 } else if (o1[0] < o2[0]) {
                     return -1;
+
                 } else {
                     if (o1[1] > o2[1]) {
                         return 1;
+
                     } else if (o1[1] < o2[1]) {
                         return -1;
+
                     } else {
                         return 0;
                     }
@@ -95,13 +102,13 @@ public class Merge {
         List<String> resList = new ArrayList<>();
         int len = intervals.length;
         for (int i = 1; i < len; i++) {
-            if (end < intervals[i][0]) {
 
+            if (end < intervals[i][0]) {
                 resList.add(start + "_" + end);
                 start = intervals[i][0];
                 end = intervals[i][1];
-            } else {
 
+            } else {
                 end = Math.max(end, intervals[i][1]);
             }
         }
