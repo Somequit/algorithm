@@ -1,4 +1,4 @@
-package leetcode.contest_353;
+package leetcode.contest.contest_353;
 
 import utils.AlgorithmUtils;
 
