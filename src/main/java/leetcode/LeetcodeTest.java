@@ -19,22 +19,10 @@ public class LeetcodeTest {
     }
 
     private String solution(String[] strs) {
-        StringBuffer res = new StringBuffer("");
 
-        int minLen = strs[0].length();
-        for (String str : strs) {
-            minLen = Math.min(minLen, str.length());
-        }
+        StringBuffer stringBuffer = new StringBuffer("12345");
+        stringBuffer.insert(3, strs[0]);
 
-        for (int i = 0; i < minLen; i++) {
-            for (int j = 1; j < strs.length; j++) {
-                if (strs[j].charAt(i) != strs[j - 1].charAt(i)) {
-                    return res.toString();
-                }
-            }
-            res.append(strs[0].charAt(i));
-        }
-
-        return res.toString();
+        return stringBuffer.toString();
     }
 }
