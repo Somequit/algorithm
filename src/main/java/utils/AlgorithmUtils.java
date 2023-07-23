@@ -288,6 +288,16 @@ public class AlgorithmUtils {
     }
 
     /**
+     * 输入字符
+     */
+    public static char systemInChar(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("请输入整数:");
+        String result = sc.nextLine();
+        return result.charAt(0);
+    }
+
+    /**
      * 输入整数
      */
     public static long systemInNumber(){
