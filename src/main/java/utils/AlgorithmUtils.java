@@ -333,6 +333,29 @@ public class AlgorithmUtils {
     /**
      * 输入二维数组
      */
+    public static Integer[][] systemInTwoArrayInteger(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("请输入数组的行数:");
+        int row = sc.nextInt();
+        System.out.print("请输入数组的列数:");
+        int cols = sc.nextInt();
+        Integer[][] array = new Integer[row][cols];
+
+        sc.nextLine();
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs = arrayStr.split(" ");
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < cols; j++) {
+                array[i][j] = Integer.parseInt(arrayStrs[i * cols + j]);
+            }
+        }
+        return array;
+    }
+
+    /**
+     * 输入二维数组
+     */
     public static String[][] systemInTwoArrayString(){
         Scanner sc = new Scanner(System.in);
         System.out.print("请输入数组的行数:");
