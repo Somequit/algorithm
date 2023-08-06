@@ -30,8 +30,10 @@ public class Contest3 {
             return 0;
         }
 
+        // 多源 BFS 确定每个点的安全系数
         int[][] safenessGrid = getSafenessGrid(grid);
 
+        // 单源 BFS 从起点 (0,0) 出发队列返回最大值，更新该点到起点的最大安全系数
         int res = doMaximumSafenessFactor(safenessGrid);
 
         return res;
@@ -45,45 +47,31 @@ public class Contest3 {
             Arrays.fill(safenessGrid[i], Integer.MAX_VALUE);
         }
 
-        Queue<Pair<Integer, String>> queue = new PriorityQueue<>(new Comparator<Pair<Integer, String>>() {
-            @Override
-            public int compare(Pair<Integer, String> o1, Pair<Integer, String> o2) {
-                return o1.getKey() - o2.getKey();
-            }
-        });
+        Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
 
-        int total = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid.get(i).get(j) == 1) {
-                    queue.add(new Pair<>(0, i+"_"+j));
+                    queue.add(new Pair<>(i, j));
                     safenessGrid[i][j] = 0;
-                    total++;
                 }
             }
         }
-//        System.out.println(queue);
+        while (!queue.isEmpty()) {
+            Pair<Integer, Integer> pair = queue.poll();
 
-        if (total == n * n) {
-            return safenessGrid;
-        }
+            int x = pair.getKey();
+            int y = pair.getValue();
+            int distance = safenessGrid[x][y];
 
-        while (total != n * n && !queue.isEmpty()) {
-            Pair<Integer, String> pair = queue.poll();
-            int distance = pair.getKey();
-
-            int x = Integer.parseInt(pair.getValue().split("_")[0]);
-            int y = Integer.parseInt(pair.getValue().split("_")[1]);
             List<Pair<Integer, Integer>> nextPair = getNextPosition(x, y, n);
-//            System.out.println(nextPair);
-
             for (int i = 0; i < nextPair.size(); i++) {
                 int xx = nextPair.get(i).getKey();
                 int yy = nextPair.get(i).getValue();
+
                 if (safenessGrid[xx][yy] > distance + 1) {
                     safenessGrid[xx][yy] = distance + 1;
-                    total++;
-                    queue.add(new Pair<>(distance + 1, xx+"_"+yy));
+                    queue.add(new Pair<>(xx, yy));
 //                    System.out.println(distance + 1 + " : " + xx + " : " + yy);
                 }
             }
@@ -112,31 +100,32 @@ public class Contest3 {
             Arrays.fill(distanceGrid[i], -1);
         }
 
-        distanceGrid[0][0] = safenessGrid[0][0];
-        Queue<Pair<Integer, String>> queue = new PriorityQueue<>(new Comparator<Pair<Integer, String>>() {
+        Queue<Pair<Integer, Integer>> queue = new PriorityQueue<>(new Comparator<Pair<Integer, Integer>>() {
             @Override
-            public int compare(Pair<Integer, String> o1, Pair<Integer, String> o2) {
-                return o2.getKey() - o1.getKey();
+            public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
+                return distanceGrid[o2.getKey()][o2.getValue()] - safenessGrid[o1.getKey()][o1.getValue()];
             }
         });
-        queue.add(new Pair<>(safenessGrid[0][0], "0_0"));
+        distanceGrid[0][0] = safenessGrid[0][0];
+        queue.add(new Pair<>(0, 0));
 
         while (!queue.isEmpty()) {
-            Pair<Integer, String> pair = queue.poll();
+            Pair<Integer, Integer> pair = queue.poll();
 
-            int distance = pair.getKey();
+            int x = pair.getKey();
+            int y = pair.getValue();
+            int distance = distanceGrid[x][y];
 
-            int x = Integer.parseInt(pair.getValue().split("_")[0]);
-            int y = Integer.parseInt(pair.getValue().split("_")[1]);
             List<Pair<Integer, Integer>> nextPair = getNextPosition(x, y, n);
 //            System.out.println(nextPair);
 
             for (int i = 0; i < nextPair.size(); i++) {
                 int xx = nextPair.get(i).getKey();
                 int yy = nextPair.get(i).getValue();
+
                 if (distanceGrid[xx][yy] == -1) {
                     distanceGrid[xx][yy] = Math.min(distance, safenessGrid[xx][yy]);
-                    queue.add(new Pair<>(distanceGrid[xx][yy], xx+"_"+yy));
+                    queue.add(new Pair<>(xx, yy));
 //                    System.out.println(distanceGrid[xx][yy] + " : " + xx + " : " + yy);
                 }
             }
