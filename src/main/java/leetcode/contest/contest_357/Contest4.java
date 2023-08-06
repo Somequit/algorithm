@@ -22,125 +22,55 @@ public class Contest4 {
         }
     }
 
-        public long solution(int[][] items, int k) {
-            int n = items.length;
-            ArrayList<Pair<Integer, Integer>>[] profitIndexList = new ArrayList[n];
-            for (int i = 0; i < n; i++) {
-                profitIndexList[i] = new ArrayList<>();
-            }
-
-            for (int i = 0; i < n; i++) {
-                int profit = items[i][0];
-                int category = items[i][1] - 1;
-                profitIndexList[category].add(new Pair<>(profit, i));
-            }
-
-            Queue<Pair<Integer, Integer>> maxAllCategoryProfit = new PriorityQueue<>(new Comparator<Pair<Integer, Integer>>() {
-                @Override
-                public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
-                    if (!o2.getKey().equals(o1.getKey())) {
-                        return o2.getKey() - o1.getKey();
-                    } else {
-                        return o1.getValue() - o2.getValue();
-                    }
-                }
-            });
-
-            Queue<Pair<Integer, Integer>> maxDifferentCategoryProfit = new PriorityQueue<>(new Comparator<Pair<Integer, Integer>>() {
-                @Override
-                public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
-                    if (!o2.getKey().equals(o1.getKey())) {
-                        return o2.getKey() - o1.getKey();
-                    } else {
-                        return o1.getValue() - o2.getValue();
-                    }
-                }
-            });
-
-            for (int i = 0; i < n; i++) {
-                Collections.sort(profitIndexList[i], new Comparator<Pair<Integer, Integer>>() {
-                    @Override
-                    public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
-                        int profit1 = o1.getKey();
-                        int profit2 = o2.getKey();
-                        return profit2 - profit1;
-                    }
-                });
-//            System.out.println(i + " : " + profitIndexList[i]);
-
-                if (profitIndexList[i].size() > 0) {
-                    for (Pair<Integer, Integer> profitIndex : profitIndexList[i]) {
-                        int profit = profitIndex.getKey();
-                        int index = profitIndex.getValue();
-                        maxAllCategoryProfit.add(new Pair<>(profit, index));
-                    }
-
-                    int maxProfit = profitIndexList[i].get(0).getKey();
-                    int maxIndex = profitIndexList[i].get(0).getValue();
-                    maxDifferentCategoryProfit.add(new Pair<>(maxProfit, maxIndex));
-                }
-            }
-//        System.out.println();
-//
-//        System.out.println(maxAllCategoryProfit);
-//        System.out.println(maxDifferentCategoryProfit);
-//        System.out.println();
-
-            int[] visit = new int[n];
-            long maxElegance = 0;
-            Set<Integer> myCategory = new HashSet<>();
-
-            for (int i = 0; i < k; i++) {
-                while (visit[maxAllCategoryProfit.peek().getValue()] == 1) {
-                    maxAllCategoryProfit.poll();
-                }
-                Pair<Integer, Integer> allPair = maxAllCategoryProfit.peek();
-
-                Pair<Integer, Integer> differentPair = new Pair<>(0, 0);
-                if (!maxDifferentCategoryProfit.isEmpty()) {
-                    differentPair = maxDifferentCategoryProfit.peek();
-                }
-//            System.out.println(allPair);
-//            System.out.println(differentPair);
-//            System.out.println(myCategory);
-//            System.out.println(items[allPair.getValue()][1] - 1);
-//            System.out.println();
-
-                int category = items[allPair.getValue()][1] - 1;
-                if (myCategory.contains(category)) {
-                    long allElegance = allPair.getKey();
-                    long differentElegance = 0;
-                    if (differentPair.getKey() > 0) {
-                        differentElegance = differentPair.getKey() + 2 * (myCategory.size() + 1) - 1;
-                    }
-
-                    if (allElegance > differentElegance) {
-                        maxElegance += allElegance;
-                        visit[allPair.getValue()] = 1;
-                        maxAllCategoryProfit.poll();
-
-                    } else {
-                        maxElegance += differentElegance;
-                        visit[differentPair.getValue()] = 1;
-                        myCategory.add(items[differentPair.getValue()][1] - 1);
-                        maxDifferentCategoryProfit.poll();
-                    }
-
-                } else {
-                    maxElegance += differentPair.getKey() + 2 * (myCategory.size() + 1) - 1;
-                    visit[differentPair.getValue()] = 1;
-                    myCategory.add(items[differentPair.getValue()][1] - 1);
-                    maxAllCategoryProfit.poll();
-                    maxDifferentCategoryProfit.poll();
-                }
-
-//            System.out.println(allPair);
-//            System.out.println(differentPair);
-//            System.out.println(myCategory);
-//            System.out.println(maxElegance);
-//            System.out.println();
-            }
-
-            return maxElegance;
+    public long solution(int[][] items, int k) {
+        // 判空
+        if (items == null || items.length == 0 || k <= 0) {
+            return 0;
         }
+
+        // profit 降序
+        int n = items.length;
+        Arrays.sort(items, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o2[0] - o1[0];
+            }
+        });
+
+        // 先取 profit 最大的 k 个元素
+        long totalProfit = 0;
+        Set<Integer> categorySet = new HashSet<>();
+        // 使用栈（双端队列模拟）存储需要替换的元素（预先加入的 k 个元素），元素必须重复且不能最大
+        Deque<Integer> duplicate = new ArrayDeque<>(n);
+        for (int i = 0; i < k; i++) {
+            int profit = items[i][0];
+            int category = items[i][1];
+
+            totalProfit += profit;
+            // 重复的元素，同时由于 profit 降序，因此这一定不是最大的 profit
+            if (!categorySet.add(category)) {
+                duplicate.addFirst(profit);
+            }
+        }
+        long maxElegance = totalProfit + (long)categorySet.size() * categorySet.size();
+//        System.out.println(totalProfit + " : " + categorySet);
+//        System.out.println(duplicate);
+
+        // 反悔将后续元素替换前面的元素，后续元素 profit 不占优，因此需要 category 增加，同时 category 增加 x 个可能不是最优、但增加 x+1 个是最优
+        for (int i = k; i < n; i++) {
+            int profit = items[i][0];
+            int category = items[i][1];
+
+            // 注意先判断可替换的是否为空，没有出现过就替换前面栈顶的最小重复的 profit 元素，同时由于 profit 降序，因此这一定是没出现的最大 profit
+            if (!duplicate.isEmpty() && categorySet.add(category)) {
+                totalProfit -= duplicate.pollFirst();
+                totalProfit += profit;
+            }
+//            System.out.println(totalProfit + " : " + categorySet);
+
+            maxElegance = Math.max(maxElegance, totalProfit + (long)categorySet.size() * categorySet.size());
+        }
+
+        return maxElegance;
+    }
 }
