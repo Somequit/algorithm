@@ -25,6 +25,13 @@ public class Contest3 {
 
     }
 
+    /**
+     * 首先按照 end 升序，
+     * 然后循环 offers 找小于 start 的所有 end区间 （空或者连续的区间）中最大的 gold：end区间 保证 end 递增、gold 递增
+     * 接着将找到的 gold （可能为空）加入当前遍历中的 gold，然后判断是否将 [end, sum(gold)] 加入 end区间
+     * 答案就是 end区间 的最后一个值（gold 最大）
+     * 设 offers.length 为 m，时间复杂度：O（m*logm），空间复杂度：O（m）
+     */
     public int solution(int n, List<List<Integer>> offers) {
         // end 升序排序
         Collections.sort(offers, new Comparator<List<Integer>>() {
@@ -35,7 +42,7 @@ public class Contest3 {
         });
 //        System.out.println("offers:" + offers);
 
-        // end区间 保证 end 非递减、gold 递增
+        // end区间 保证 end 递增、gold 递增
         TreeMap<Integer, Integer> endRangeTreeMap = new TreeMap<>();
 
         // 循环 offers 找小于 start 的所有 end区间 （空或者连续的区间）中最大的 gold
@@ -48,7 +55,7 @@ public class Contest3 {
             Map.Entry<Integer, Integer> endRangeEntry = endRangeTreeMap.lowerEntry(start);
 //            System.out.println("endRangeEntry:" + endRangeEntry + " : " + start);
 
-            // 找到 gold （可能为空）加入当前 start 中的 gold，然后判断是否将 [end,sum(gold)] 加入 end区间（必须保证 gold 递增）
+            // 将找到的 gold （可能为空）加入当前遍历中的 gold，然后判断是否将 [end, sum(gold)] 加入 end区间
             if (endRangeEntry != null) {
                 gold += endRangeEntry.getValue();
             }
