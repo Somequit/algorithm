@@ -1,6 +1,4 @@
-package leetcode.contest.double_111;
-
-import utils.AlgorithmUtils;
+package leetcode.contest.double_112;
 
 import java.util.List;
 
@@ -23,16 +21,16 @@ public class Contest1 {
 
     }
 
-    private int solution(List<Integer> nums, int target) {
-        int res = 0;
-        for (int i = 0; i < nums.size(); i++) {
-            for (int j = i + 1; j < nums.size(); j++) {
-                if (nums.get(i) + nums.get(j) < target) {
-                    res++;
-                }
+    private boolean solution(String s1, String s2) {
+        if ((s1.charAt(0) == s2.charAt(0) && s1.charAt(2) == s2.charAt(2)) ||
+                (s1.charAt(0) == s2.charAt(2) && s1.charAt(2) == s2.charAt(0))) {
+
+            if ((s1.charAt(1) == s2.charAt(1) && s1.charAt(3) == s2.charAt(3)) ||
+                    (s1.charAt(1) == s2.charAt(3) && s1.charAt(3) == s2.charAt(1))) {
+                return true;
             }
         }
-        return res;
+        return false;
     }
 
 
