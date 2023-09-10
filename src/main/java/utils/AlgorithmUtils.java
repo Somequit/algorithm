@@ -77,7 +77,12 @@ public class AlgorithmUtils {
         List<Integer> list = new ArrayList<>(length);
 
         String arrayStr = sc.nextLine();
-        String[] arrayStrs = arrayStr.split(" ");
+        String[] arrayStrs;
+        if (arrayStr.contains(" ")) {
+            arrayStrs = arrayStr.split(" ");
+        } else {
+            arrayStrs = arrayStr.split(",");
+        }
 
         for(int i=0; i<length; i++){
             list.add("null".equals(arrayStrs[i]) ? null : Integer.parseInt(arrayStrs[i]));
