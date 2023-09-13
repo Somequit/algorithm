@@ -31,7 +31,57 @@ public class Search {
 
             int res = search.solution(nums, target);
             System.out.println(res);
+
+            int res2 = search.solution2(nums, target);
+            System.out.println(res2);
         }
+    }
+
+    private int solution2(int[] nums, int target) {
+        // 判空
+        if (nums == null || nums.length <= 0) {
+            return -1;
+        }
+
+        // 特判长度为 1
+        if (nums.length == 1) {
+            return nums[0] == target ? 0 : -1;
+        }
+
+        // 一次二分解决
+        int left = 0;
+        int right = nums.length - 1;
+        int res = -1;
+        while (left <= right) {
+            int mid = ((right - left + 1) >> 1) + left;
+
+            if (target == nums[mid]) {
+                res = mid;
+                break;
+            }
+
+            // [left, mid] 递增
+            if (nums[mid] >= nums[left]) {
+                if (target >= nums[left] && target <= nums[mid]) {
+                    right = mid - 1;
+
+                } else {
+                    left = mid + 1;
+                }
+
+                // [left, mid-k-1] 处递增，[mid-k,mid]（更小） 但再次递增
+            } else {
+                if (target <= nums[right] && target > nums[mid]) {
+                    left = mid + 1;
+
+                } else {
+                    right = mid - 1;
+                }
+
+            }
+        }
+
+        return res;
     }
 
     public int solution(int[] nums, int target) {
@@ -67,7 +117,7 @@ public class Search {
      */
     private int getMinIndex(int[] nums) {
         int left = 0;
-        int right = nums.length;
+        int right = nums.length - 1;
 
         int res = 0;
         while (left < right) {
