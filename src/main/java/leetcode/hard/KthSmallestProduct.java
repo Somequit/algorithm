@@ -60,7 +60,7 @@ public class KthSmallestProduct {
 
             } else {
                 // 积为正数总个数
-                long multiPositive = (long)negPosNums1[0].size() * negPosNums2[0].size() + (long)negPosNums1[1].size() * negPosNums2[1].size();
+//                long multiPositive = (long)negPosNums1[0].size() * negPosNums2[0].size() + (long)negPosNums1[1].size() * negPosNums2[1].size();
                 // 第 k 小为正数，则二分 [1, Max(negPosNums1[0][len-1]*negPosNums2[0][len-1], negPosNums1[1][len-1]*negPosNums2[1][len-1])]，
                 // 找到 负数1*负数2 + 正数1*正数2 区间第 k-总负数与0个数 小
                 k -= (multiNegative + multiZero);
@@ -121,8 +121,8 @@ public class KthSmallestProduct {
             long mid = ((right - left) >> 1) + left;
 
             // 0-等于 mid 的个数，1-小于 mid 的个数
-            int[] count = getLessEqualCount(mid, firstNums1, firstNums2);
-            int[] countTemp = getLessEqualCount(mid, secondNums1, secondNums2);
+            long[] count = getLessEqualCount(mid, firstNums1, firstNums2);
+            long[] countTemp = getLessEqualCount(mid, secondNums1, secondNums2);
             count[0] += countTemp[0];
             count[1] += countTemp[1];
 
@@ -151,15 +151,15 @@ public class KthSmallestProduct {
      * @param list2 正整数递增数组
      * @return 0-等于 mid 的个数，1-小于 mid 的个数
      */
-    private int[] getLessEqualCount(long target, List<Integer> list1, List<Integer> list2) {
-        int[] count = new int[2];
-        int[] temp = new int[2];
+    private long[] getLessEqualCount(long target, List<Integer> list1, List<Integer> list2) {
+        long[] count = new long[2];
+        long[] temp = new long[2];
 
         // 乘积小于等于 target，list1 降序、list2 就一定非降序，因此使用双指针
         for (int i = list1.size() - 1, j = 0; i >= 0; i--) {
 
             // list1 变小则之前相乘等于 target 的就一定小于 target，更新 temp
-            if (i < list1.size() - 1 && list1.get(i) != list1.get(i + 1)) {
+            if (i < list1.size() - 1 && !list1.get(i).equals(list1.get(i + 1))) {
                 temp[1] += temp[0];
                 temp[0] = 0;
             }
