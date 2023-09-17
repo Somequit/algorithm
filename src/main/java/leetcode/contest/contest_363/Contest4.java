@@ -19,8 +19,37 @@ public class Contest4 {
 
             long res = contest.solution(nums);
             System.out.println(res);
+
+            long res2 = contest.solution2(nums);
+            System.out.println(res2);
         }
 
+    }
+
+    private long solution2(List<Integer> nums) {
+        int n = nums.size();
+        int[] factorOddProduct = new int[n];
+        for (int i = 0; i < n; i++) {
+
+            int tempI = i + 1;
+            for (int j = 2; j*j <= tempI; j++) {
+                while (tempI % (j*j) == 0) {
+                    tempI /= j*j;
+                }
+            }
+
+            factorOddProduct[i] = tempI;
+        }
+        System.out.println(Arrays.toString(factorOddProduct));
+
+        long res = 0;
+        Map<Integer, Long> numMap = new HashMap<>(n << 1);
+        for (int i = 0; i < n; i++) {
+            numMap.put(factorOddProduct[i], numMap.getOrDefault(factorOddProduct[i], 0L) + nums.get(i));
+            res = Math.max(res, numMap.get(factorOddProduct[i]));
+        }
+
+        return res;
     }
 
     private static final int FACTOR_NUM = 10000;
