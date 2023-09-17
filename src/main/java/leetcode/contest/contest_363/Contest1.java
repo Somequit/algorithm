@@ -24,6 +24,7 @@ public class Contest1 {
     private int solution(List<Integer> nums, int k) {
         int res = 0;
         for (int i = 0; i < nums.size(); i++) {
+            int num = Integer.bitCount(i);
             if (checkIndicesWithKSetBits(i, k)) {
                 res += nums.get(i);
             }
@@ -38,6 +39,16 @@ public class Contest1 {
             num -= (num & -num);
         }
         return count == k;
+    }
+
+    private int solution2(List<Integer> nums, int k) {
+        int res = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (Integer.bitCount(i) == k) {
+                res += nums.get(i);
+            }
+        }
+        return res;
     }
 
 
