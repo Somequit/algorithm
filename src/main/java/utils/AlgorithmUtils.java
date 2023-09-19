@@ -20,7 +20,13 @@ public class AlgorithmUtils {
         int[] array = new int[length];
 
         String arrayStr = sc.nextLine();
-        String[] arrayStrs = arrayStr.split(" ");
+        String[] arrayStrs;
+        if (arrayStr.contains(" ")) {
+            arrayStrs = arrayStr.split(" ");
+        } else {
+            arrayStrs = arrayStr.split(",");
+        }
+
 
         for (int i = 0; i < length; i++) {
             array[i] = Integer.parseInt(arrayStrs[i]);
