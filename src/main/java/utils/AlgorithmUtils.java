@@ -111,6 +111,31 @@ public class AlgorithmUtils {
     }
 
     /**
+     * 输入List
+     */
+    public static List<String> systemInListString(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("请输入容器的个数（数字以空格区分）:");
+
+        int length = sc.nextInt();
+        sc.nextLine();
+        List<String> list = new ArrayList<>(length);
+
+        String arrayStr = sc.nextLine();
+        String[] arrayStrs;
+        if (arrayStr.contains(" ")) {
+            arrayStrs = arrayStr.split(" ");
+        } else {
+            arrayStrs = arrayStr.split(",");
+        }
+
+        for(int i=0; i<length; i++){
+            list.add("null".equals(arrayStrs[i]) ? null : arrayStrs[i]);
+        }
+        return list;
+    }
+
+    /**
      * 输入数组
      */
     public static int[] systemInArray(int length){
