@@ -40,8 +40,8 @@ public class FindDuplicate {
         }
 
         // 快慢指针
-        int slow = nums[0];
-        int fast = nums[nums[0]];
+        int slow = 0;
+        int fast = nums[0];
         while (slow != fast) {
             slow = nums[slow];
             fast = nums[nums[fast]];
@@ -50,6 +50,7 @@ public class FindDuplicate {
 
         // 新指针与慢指针
         int newPointer = 0;
+        slow = nums[slow];
         while (slow != newPointer) {
             slow = nums[slow];
             newPointer = nums[newPointer];
