@@ -21,12 +21,62 @@ public class Flatten {
     public static void main(String[] args) {
         Flatten flatten = new Flatten();
         while (true) {
-            TreeNode root = AlgorithmUtils.createTree(AlgorithmUtils.systemInList());
+//            TreeNode root = AlgorithmUtils.createTree(AlgorithmUtils.systemInList());
+//            flatten.solution(root);
+//            System.out.println(root);
 
-            flatten.solution(root);
-            System.out.println(root);
+            TreeNode root2 = AlgorithmUtils.createTree(AlgorithmUtils.systemInList());
+            flatten.solution2(root2);
+            System.out.println(root2);
         }
     }
+
+    /**
+     * 非递归版
+     * 类似中序遍历：
+     * 1. 从根节点开始遍历，直到为 null
+     * 2. 判断是否有左孩子，没有则移动到右孩子，继续第 1 步
+     * 3. 再判断是否有右孩子，没有则将左孩子移动到右孩子，继续第 1 步
+     * 4. 均有则断掉左右子树
+     * 5. 原左子树放入右孩子
+     * 6. 原右子树放入原左孩子最右边的右孩子
+     * 7. 父节点移动到现右孩子，继续第 1 步
+     * @param root
+     */
+    private void solution2(TreeNode root) {
+        // 判空
+        if (root == null) {
+            return;
+        }
+
+        // 迭代版 将链表展开成左节点单链表：使用前序遍历，返回当前节点作为上一个节点，回溯时如果该节点为父节点的右节点则将其移动到上一个节点的左节点、否则不动
+        TreeNode curNode = root;
+        TreeNode leftNode;
+        TreeNode rightNode;
+        while (curNode != null) {
+            if (curNode.left == null) {
+                curNode = curNode.right;
+
+            } else if (curNode.right == null) {
+                curNode.right = curNode.left;
+                curNode.left = null;
+
+            } else {
+                leftNode = curNode.left;
+                rightNode = curNode.right;
+
+                curNode.left = null;
+                curNode.right = leftNode;
+
+                while (leftNode.right != null) {
+                    leftNode = leftNode.right;
+                }
+                leftNode.right = rightNode;
+                curNode = curNode.right;
+            }
+        }
+    }
+
 
     /**
      * 先将链表展开成左节点单链表：使用前序遍历，返回当前节点作为上一个节点，回溯时如果该节点为父节点的右节点则将其移动到上一个节点的左节点、否则不动
