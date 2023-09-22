@@ -24,7 +24,19 @@ public class MaximalRectangle {
             int res = maximalRectangle.solution(matrix);
             System.out.println(res);
 
+            int res2 = maximalRectangle.solution2(matrix);
+            System.out.println(res2);
+
         }
+    }
+
+    /**
+     * TODO:GSX:
+     * @param matrix
+     * @return
+     */
+    private int solution2(char[][] matrix) {
+        return 0;
     }
 
     /**
