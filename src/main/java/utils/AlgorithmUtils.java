@@ -531,7 +531,7 @@ public class AlgorithmUtils {
         TreeNode root = new TreeNode(treeList.get(0));
         Queue<TreeNode> treeNodeQueue = new ConcurrentLinkedQueue<>();
         treeNodeQueue.add(root);
-        for (int i = 1; i < treeList.size(); i += 2) {
+        for (int i = 1; i < treeList.size() && !treeNodeQueue.isEmpty(); i += 2) {
             TreeNode nowNode = treeNodeQueue.poll();
 
             if (treeList.get(i) != null) {
