@@ -181,6 +181,16 @@ public class AlgorithmUtils {
     /**
      * 输出二维数组
      */
+    public static void systemOutArrayObject(Object[][] array){
+        if(array == null){
+            throw new RuntimeException("array is null!");
+        }
+        Arrays.stream(array).forEach(t -> System.out.println(Arrays.toString(t)));
+    }
+
+    /**
+     * 输出二维数组
+     */
     public static void systemOutArray(long[][] array){
         if(array == null){
             throw new RuntimeException("array is null!");
