@@ -26,6 +26,42 @@ public class Contest3 {
     /**
      * @return
      */
+    private int solution2(String s1, String s2, int x) {
+        List<Integer> differenceList = new ArrayList<>();
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i)) {
+                differenceList.add(i);
+            }
+        }
+
+        if (differenceList.size() % 2 == 1) {
+            return -1;
+
+        } else if (differenceList.size() == 0) {
+            return 0;
+
+        } else {
+            int n = differenceList.size();
+            int inf = 250000;
+            // 前 i 个元素有 j=0/1 个第二步操作需要的最少代价
+            int[][] dp = new int[n][2];
+            dp[0][0] = inf;
+            dp[0][1] = x;
+            dp[1][0] = Math.min(dp[0][1], differenceList.get(1) - differenceList.get(0));
+            dp[1][1] = inf;
+
+            for (int i = 2; i < n; i++) {
+                dp[i][0] = Math.min(dp[i - 1][1], dp[i - 2][0] + differenceList.get(i) - differenceList.get(i - 1));
+                dp[i][1] = Math.min(dp[i - 1][0] + x, dp[i - 2][1] + differenceList.get(i) - differenceList.get(i - 1));
+            }
+
+            return dp[n - 1][0];
+        }
+    }
+
+    /**
+     * @return
+     */
     private int solution(String s1, String s2, int x) {
         List<Integer> differenceList = new ArrayList<>();
         for (int i = 0; i < s1.length(); i++) {
