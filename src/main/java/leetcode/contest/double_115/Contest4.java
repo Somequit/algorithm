@@ -41,40 +41,45 @@ public class Contest4 {
                 numTemp.add(i);
             }
         }
-//        System.out.println(numTemp);
-
 
         if (numTemp.size() == 0) {
-            return zeroCount + 1;
+            if (l == 0) {
+                return zeroCount + 1;
+
+            } else {
+                return 0;
+            }
         }
 
-        long[][] dp = new long[numTemp.size()][r + 1];
-        for (int i = 0; i < numTemp.size(); i++) {
-            dp[i][0] = 1;
-        }
-        for (int k = 1; k * numTemp.get(0) <= Math.min(count[numTemp.get(0)] * numTemp.get(0), r); k++) {
-            dp[0][k * numTemp.get(0)] = 1;
-        }
-//        AlgorithmUtils.systemOutArray(dp);
+        long[][] dp = new long[numTemp.size() + 1][r + 1];
+        dp[0][0] = 1;
 
-        for (int i = 1; i < numTemp.size(); i++) {
-            for (int j = 0; j <=r ; j++) {
+        for (int i = 1; i < numTemp.size() + 1; i++) {
+            for (int j = 0; j < r + 1; j++) {
                 dp[i][j] = dp[i - 1][j];
             }
-            for (int k = 1; k <= count[numTemp.get(i)]; k++) {
-                int numK = numTemp.get(i) * k;
-                for (int j = r; j >= numK; j--) {
-                    dp[i][j] += dp[i - 1][j - numK];
-                    dp[i][j] %= mod;
+            int numValue = numTemp.get(i - 1);
+
+            long[] prev = new long[r + 1];
+            for (int j = numValue; j < r + 1; j++) {
+                prev[j] = prev[j - numValue] + dp[i - 1][j - numValue];
+                if (j >= (count[numValue] + 1) * numValue) {
+                    prev[j] = prev[j] - dp[i - 1][j - (count[numValue] + 1) * numValue] + mod;
                 }
+                prev[j] %= mod;
+            }
+
+            for (int j = numValue; j < r + 1; j++) {
+                dp[i][j] += prev[j];
+                dp[i][j] %= mod;
             }
 
         }
 //        AlgorithmUtils.systemOutArray(dp);
 
         long res = 0;
-        for (int i = l; i <= r; i++) {
-            res += dp[numTemp.size() - 1][i];
+        for (int i = l; i < r + 1; i++) {
+            res += dp[numTemp.size()][i];
             res %= mod;
         }
         res = res * (zeroCount + 1) % mod;
