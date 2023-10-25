@@ -13,7 +13,6 @@ public class Contest2 {
         Contest2 contest = new Contest2();
 
         while (true) {
-            // todo
             ListNode head = null;
 
             ListNode res = contest.solution(head);

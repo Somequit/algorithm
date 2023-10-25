@@ -9,10 +9,6 @@ package interview;
 public class SlideWindow {
 
     /**
-     * TODO:
-     * 直接遍历
-     * 前缀和
-     * 树状数组
-     * 线断树
+     * todo:直接遍历、前缀和、树状数组、线断树
      */
 }
