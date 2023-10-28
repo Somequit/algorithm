@@ -16,7 +16,7 @@ public class Contest1 {
         while (true) {
 //            int n = AlgorithmUtils.systemInNumberInt();
 //            int[] nums = AlgorithmUtils.systemInArray();
-            List<Integer> list = AlgorithmUtils.systemInList();
+//            List<Integer> list = AlgorithmUtils.systemInList();
 
 //            int res = contest.solution(n, nums, list);
 //            System.out.println(res);
