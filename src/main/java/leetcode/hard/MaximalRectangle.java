@@ -3,6 +3,10 @@ package leetcode.hard;
 import utils.AlgorithmUtils;
 import utils.TreeNode;
 
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+
 /**
  * @author gusixue
  * @description
@@ -31,12 +35,79 @@ public class MaximalRectangle {
     }
 
     /**
-     * TODO:GSX:
+     * 每列顺序遍历矩阵每个点，如果是 0 则直接进下一个点，如果是 1 则记录到当前列中连续 1 的个数，
+     * 接着每行顺序遍历，每个点求出左边与右边第一个比其小的下标（或者 -1 与 m），左右之间的距离乘以当前 1 的个数，就是以当前为高的最大矩形的面积
+     * 时间复杂度：O（n*m），空间复杂度：O（n*m）
      * @param matrix
      * @return
      */
     private int solution2(char[][] matrix) {
-        return 0;
+        // 判空
+        if (matrix == null || matrix.length <= 0 || matrix[0].length <= 0) {
+            return 0;
+        }
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int[][] continuousOne = new int[n][m];
+        // 每列顺序遍历矩阵每个点，如果是 0 则直接进下一个点，如果是 1 则记录到当前列中连续 1 的个数，
+        for (int j = 0; j < m; j++) {
+            int continuous = 0;
+            for (int i = 0; i < n; i++) {
+                if (matrix[i][j] == '0') {
+                    continuous = 0;
+
+                } else {
+                    continuous++;
+                    continuousOne[i][j] = continuous;
+                }
+            }
+        }
+//        AlgorithmUtils.systemOutArray(continuousOne);
+
+        int res = 0;
+        int[] left = new int[m];
+        Deque<Integer> stack = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+
+            // 递增单调栈求出左边第一个比其小的下标或 -1
+            for (int j = 0; j < m; j++) {
+                while (!stack.isEmpty() && continuousOne[i][j] <= continuousOne[i][stack.getFirst()]) {
+                    stack.pop();
+                }
+                if (!stack.isEmpty()) {
+                    left[j] = stack.getFirst();
+
+                } else {
+                    left[j] = -1;
+                }
+
+                stack.push(j);
+            }
+//            System.out.println(Arrays.toString(left));
+            stack.clear();
+
+            // 递增单调栈求出右边第一个比其小的下标或 m，左右之间的距离乘以当前 1 的个数，就是以当前为高的最大矩形的面积
+            for (int j = m - 1; j >= 0; j--) {
+                while (!stack.isEmpty() && continuousOne[i][j] <= continuousOne[i][stack.getFirst()]) {
+                    stack.pop();
+                }
+                if (!stack.isEmpty()) {
+                    res = Math.max(res, continuousOne[i][j] * (stack.getFirst() - left[j] - 1));
+//                    System.out.print(stack.getFirst() + " ");
+
+                } else {
+                    res = Math.max(res, continuousOne[i][j] * (m - left[j] - 1));
+//                    System.out.print(m + " ");
+                }
+
+                stack.push(j);
+            }
+//            System.out.println();
+            stack.clear();
+        }
+
+        return res;
     }
 
     /**
