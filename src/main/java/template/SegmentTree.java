@@ -39,6 +39,13 @@ public class SegmentTree {
         root.right = right;
     }
 
+    SegmentTree(long[] nums) {
+        root = new Node();
+        root.left = 0;
+        root.right = nums.length;
+        buildTree(nums, root);
+    }
+
     // 区间增加 val
     public void add(long left, long right, int val) {
         addWithNode(root, left, right, val);
@@ -62,6 +69,25 @@ public class SegmentTree {
     // 查询区间平方和
     public long queryForSquare(long left, long right) {
         return queryFoSquareWithNode(root, left, right);
+    }
+
+    public void buildTree(long[] nums, Node node) {
+        // 只有一个点
+        if (node.left == node.right - 1) {
+            int cur = (int)node.left;
+            node.square = 1L * nums[cur] * nums[cur];
+            node.square %= mod;
+            node.sum = nums[cur];
+            node.max = nums[cur];
+            node.add = 0;
+            return;
+        }
+
+        // 动态开点
+        pushDown(node);
+        buildTree(nums, node.leftNode);
+        buildTree(nums, node.rightNode);
+        pushUp(node);
     }
 
     private long queryForMaxWithNode(Node node, long left, long right) {
