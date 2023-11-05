@@ -28,15 +28,6 @@ public class Contest1 {
      * @return
      */
     private int solution(int n, int m) {
-//        int len = 0;
-//
-//        for (int i = 0; i < len; i++) {
-//
-//        }
-//
-//        for (int i = 0; i < n; i++) {
-//
-//        }
 
         return 0;
     }
