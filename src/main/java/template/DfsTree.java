@@ -37,7 +37,7 @@ public class DfsTree {
         long res = 0L;
 
         // 叶子节点
-        if (edgeList[son].size() == 1) {
+        if (edgeList[son].size() == 1 && edgeList[son].get(0).equals(father)) {
             return res;
         }
 
