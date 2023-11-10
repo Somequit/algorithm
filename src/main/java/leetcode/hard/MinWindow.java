@@ -1,6 +1,5 @@
-package leetcode.medium;
+package leetcode.hard;
 
-import template.Algorithm;
 import utils.AlgorithmUtils;
 
 import java.util.HashMap;
