@@ -9,7 +9,11 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
+ * 101. 对称二叉树
  * 给你一个二叉树的根节点 root ， 检查它是否轴对称。
+ * 树中节点数目在范围 [1, 1000] 内
+ * -100 <= Node.val <= 100
+ * 进阶：你可以运用递归和迭代两种方法解决这个问题吗？
  * @author gusixue
  * @date 2023/2/16
  */

@@ -8,9 +8,11 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
+ * 543. 二叉树的直径
  * 给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
  * 注意：两结点之间的路径长度是以它们之间边的数目表示。
- *
+ * 树中节点数目在范围 [1, 10 ^ 4] 内
+ * -100 <= Node.val <= 100
  * @author gusixue
  * @date 2023/2/15
  */
