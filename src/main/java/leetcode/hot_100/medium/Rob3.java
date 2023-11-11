@@ -3,9 +3,7 @@ package leetcode.hot_100.medium;
 import utils.AlgorithmUtils;
 import utils.TreeNode;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author gusixue
@@ -19,10 +17,10 @@ import java.util.Map;
  * 0 <= Node.val <= 10^4
  * @date 2023/5/25
  */
-public class Rob {
+public class Rob3 {
 
     public static void main(String[] args) {
-        Rob rob = new Rob();
+        Rob3 rob = new Rob3();
         while (true) {
             List<Integer> treeList = AlgorithmUtils.systemInList();
             TreeNode root = AlgorithmUtils.createTree(treeList);

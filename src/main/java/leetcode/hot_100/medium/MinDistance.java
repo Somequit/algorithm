@@ -1,4 +1,4 @@
-package leetcode.brushQuestions;
+package leetcode.hot_100.medium;
 
 import utils.AlgorithmUtils;
 
