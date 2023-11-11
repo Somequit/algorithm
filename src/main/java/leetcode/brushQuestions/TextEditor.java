@@ -1,6 +1,4 @@
-package leetcode.hot_100.hard;
-
-import javax.xml.soap.Text;
+package leetcode.brushQuestions;
 
 /**
  * @author gusixue

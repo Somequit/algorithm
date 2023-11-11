@@ -5,7 +5,6 @@ import utils.AlgorithmUtils;
 /**
  * 5. 最长回文子串
  * 最长回文子串,给你一个字符串 s，找到 s 中最长的回文子串。
- * KMP解法
  */
 public class LongestPalindrome {
 
@@ -37,6 +36,7 @@ public class LongestPalindrome {
         }
 
     /**
+     * KMP
      * kmp算法模板，match 文本串倒序后当做模式串 pattern，求模式串的 next 数组后与文本串进行匹配，
      * 当匹配到文本串的末尾、这时匹配上的个数大于2（假设为res），就代表当前文本串的回文存在、从文本串结尾往前 res 个字符为回文
      * 然后将文本串删除最后一个字符，模式串删除第一个字符，再次求模式串的 next 数组后匹配...结果与 res 求最大值
@@ -128,4 +128,139 @@ public class LongestPalindrome {
         return p;
     }
 
+
+    /**
+     * 循环暴力
+     * 假设[i，j]为回文串、那么有两种情况（注：i<=j）
+     * 奇数个字符：以k（i+j>>1）为中心，[i,k]等于[j,k]
+     * 偶数个字符：以k（i+j>>1）与k+1为中心，[i,k]等于[j,k+1]
+     * 先枚举每个k为中心，查询最长的回文；再枚举k k+1为中心，查询最长的回文
+     * 时间复杂度：O(n*n)，额外空间复杂度：O(1)
+     * @param s 求回文的文本串
+     */
+    private static String solution2(String s) {
+        char[] arrayChar = s.toCharArray();
+
+        int targetIndex = 0;
+        int targetCount = 0;
+        for (int k = 0; k < arrayChar.length; k++) {
+            // 奇数个字符 将奇数、偶数合并成相同处理
+            int palindromeCount = calculatePalindrome(k ,k, arrayChar);
+            if (palindromeCount > targetCount) {
+                targetCount = palindromeCount;
+                targetIndex = k - (palindromeCount >> 1);
+            }
+            // 偶数个字符
+            palindromeCount = calculatePalindrome(k ,k + 1, arrayChar);
+            if (palindromeCount > targetCount) {
+                targetCount = palindromeCount;
+                targetIndex = k + 1 - (palindromeCount >> 1);
+            }
+        }
+
+//        System.out.println(targetIndex + ":" + targetCount);
+//        System.out.println(s);
+        return s.substring(targetIndex, targetIndex + targetCount);
+    }
+
+    /**
+     * 查询以k与l为中心最大的回文
+     * 返回回文的长度
+     */
+    private static int calculatePalindrome(int k, int l, char[] arrayChar) {
+        while (k >= 0 && l < arrayChar.length && arrayChar[k] == arrayChar[l]) {
+            k--;
+            l++;
+        }
+        return l - k - 1;
+    }
+
+
+    /**
+     * Manacher（马拉车）
+     * Manacher（马拉车）算法：暴力的优化算法
+     * 时间复杂度：O(n)，额外空间复杂度：O(n)
+     * @param s 求回文的文本串
+     */
+    private static String solution3(String s) {
+        final char extend = '#';
+        // 预处理字符串 使用一定不会出现的字符，将字符串长度设置为:2 * len + 1
+        char[] arrayChar = pretreatment(s, extend);
+        System.out.println(arrayChar);
+        // Manacher（马拉车）算法处理字符串
+        String result = manacher(arrayChar, extend);
+        return result;
+    }
+
+    /**
+     * 预处理字符串
+     * 使用一定不会出现的字符，将字符串长度设置为:2 * len + 1
+     */
+    private static char[] pretreatment(String s, final char extend) {
+        char[] arrayChar = new char[(s.length() << 1) + 1];
+        for (int i = 0; i < arrayChar.length; i++) {
+            if ((i & 1) == 1) {
+                arrayChar[i] = s.charAt(i >> 1);
+            } else {
+                arrayChar[i] = extend;
+            }
+        }
+        return arrayChar;
+    }
+
+    /**
+     * Manacher（马拉车）算法处理字符串
+     */
+    private static String manacher(char[] arrayChar, final char extend) {
+        int maxLen = 0;
+        int[] len = new int[arrayChar.length];
+        int center = -1;
+        int right = -1;
+        for (int i = 0; i < arrayChar.length; i++) {
+            if (i >= right) {
+                len[i] = palindromeHalf(i, i+1, arrayChar);
+                center = i;
+                right = i + len[i];
+            } else {
+                int iMirror = (center << 1) - i;
+                int leftMirror = iMirror - len[iMirror];
+                int left = (center << 1) - right;
+                if (left < leftMirror) {
+                    len[i] = len[iMirror];
+                } else if (left > leftMirror) {
+                    len[i] = iMirror - left;
+                } else {
+                    len[i] = palindromeHalf(i, right, arrayChar);
+                    center = i;
+                    right = i + len[i];
+                }
+            }
+            if (len[maxLen] < len[i]) {
+                maxLen = i;
+            }
+        }
+        AlgorithmUtils.systemOutArray(len);
+
+        StringBuilder result = new StringBuilder();
+        int targetLeft = maxLen - len[maxLen];
+        int targetRight = maxLen + len[maxLen];
+        for (int i = targetLeft + 1; i < targetRight; i++) {
+            if (arrayChar[i] != extend) {
+                result.append(arrayChar[i]);
+            }
+        }
+        System.out.println(result);
+        return result.toString();
+    }
+
+    /**
+     * 以 i 为中心，从 start 开始搜索 arrayChar 字符串
+     * 返回回文半径（回文串长度的一半且算上中心字符）
+     */
+    private static int palindromeHalf(int i, int start, char[] arrayChar) {
+        while(start < arrayChar.length && (i << 1) >= start && arrayChar[start] == arrayChar[(i << 1) - start]) {
+            start++;
+        }
+        return start - i;
+    }
 }
