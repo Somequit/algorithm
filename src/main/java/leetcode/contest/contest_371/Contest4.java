@@ -17,6 +17,9 @@ public class Contest4 {
 
             int res = contest.solution(nums);
             System.out.println(res);
+
+            int res2 = contest.solution2(nums);
+            System.out.println(res2);
         }
 
     }
@@ -113,6 +116,104 @@ public class Contest4 {
         }
     }
 
+
+    private int solution2(int[] nums) {
+        Arrays.sort(nums);
+
+        int res = 0;
+        Trie trie = new Trie();
+        trie.insert(nums[0], 1);
+        for (int left = 0, right = 1; right < nums.length; right++) {
+            while (nums[right] > (nums[left] << 1)) {
+                trie.insert(nums[left], -1);
+                left++;
+            }
+
+            if (left < right) {
+                res = Math.max(res, trie.searchXorMax(nums[right]));
+            }
+            trie.insert(nums[right], 1);
+        }
+
+        return res;
+    }
+
+    class Trie {
+        public class TrieNode{
+            //        Map<Character, TrieNode> nextNode;
+//        // 上一层是否为结束
+//        // boolean isEnd;
+            TrieNode one;
+            TrieNode zero;
+            int count;
+        }
+
+        public TrieNode root;
+
+        Trie() {
+            this.root = new TrieNode();
+        }
+
+        public void insert(int num, int val) {
+            TrieNode curNode = this.root;
+
+            for (int i = 19; i >= 0; i--) {
+                int bitNum = (1 << i);
+
+                // 该位为 0
+                if ((num & bitNum) == 0) {
+                    if (curNode.zero == null) {
+                        curNode.zero = new TrieNode();
+                    }
+                    curNode.zero.count += val;
+
+                    curNode = curNode.zero;
+
+                } else {
+                    if (curNode.one == null) {
+                        curNode.one = new TrieNode();
+                    }
+                    curNode.one.count += val;
+
+                    curNode = curNode.one;
+                }
+            }
+        }
+
+        /**
+         * 将 num 从高位到低位遍历，在字典树中找是否有该位相反的元素，没有则找相同的元素继续，返回 num 异或字典树的最大值
+         */
+        public int searchXorMax(int num) {
+            int res = 0;
+            TrieNode curNode = this.root;
+
+            for (int i = 19; i >= 0; i--) {
+                int bitNum = (1 << i);
+
+                // 该位为 0
+                if ((num & bitNum) == 0) {
+                    if (curNode.one == null || curNode.one.count == 0) {
+                        curNode = curNode.zero;
+
+                    } else {
+                        res += bitNum;
+                        curNode = curNode.one;
+                    }
+
+                } else {
+                    if (curNode.zero == null || curNode.zero.count == 0) {
+                        curNode = curNode.one;
+
+                    } else {
+                        res += bitNum;
+                        curNode = curNode.zero;
+                    }
+                }
+
+            }
+            return res;
+        }
+    }
 }
 
 

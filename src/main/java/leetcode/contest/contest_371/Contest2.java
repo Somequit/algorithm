@@ -45,14 +45,8 @@ public class Contest2 {
             Collections.sort(timeList);
 //            System.out.println(timeList);
 
-            for (int i = 0; i < timeList.size(); i++) {
-                int count = 1;
-                for (int j = i + 1; j < timeList.size(); j++) {
-                    if (timeList.get(j) - timeList.get(i) < 60) {
-                        count++;
-                    }
-                }
-                if (count >= 3) {
+            for (int i = 0; i < timeList.size() - 2; i++) {
+                if (timeList.get(i + 2) - timeList.get(i) < 60) {
                     res.add(timeEntry.getKey());
                     break;
                 }
