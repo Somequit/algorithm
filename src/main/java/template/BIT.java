@@ -28,7 +28,7 @@ public class BIT {
 
     // 区间查询，前闭后开区间 [left, right)
     public int queryForSum(int left, int right) {
-        return queryForSum(right) - queryForSum(left - 1);
+        return queryForSum(right) - queryForSum(left);
     }
 
     // 前缀区间查询，前闭后开区间 [0, index)
