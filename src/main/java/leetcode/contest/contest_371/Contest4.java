@@ -1,6 +1,10 @@
 package leetcode.contest.contest_371;
 
 
+import utils.AlgorithmUtils;
+
+import java.util.*;
+
 /**
  */
 public class Contest4 {
@@ -9,12 +13,10 @@ public class Contest4 {
         Contest4 contest = new Contest4();
 
         while (true) {
-//            int n = AlgorithmUtils.systemInNumberInt();
-//            int[] nums = AlgorithmUtils.systemInArray();
-//            List<Integer> list = AlgorithmUtils.systemInList();
+            int[] nums = AlgorithmUtils.systemInArray();
 
-//            int res = contest.solution(n, nums, list);
-//            System.out.println(res);
+            int res = contest.solution(nums);
+            System.out.println(res);
         }
 
     }
@@ -22,10 +24,95 @@ public class Contest4 {
     /**
      * @return
      */
-    private int solution(int n, int m) {
+    private int solution(int[] nums) {
+        BIT bit = new BIT(1 << 20);
 
-        return 0;
+        int maxNum = 0;
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+            maxNum = Math.max(maxNum, num);
+        }
+        for (int num : set) {
+            bit.add(num, 1);
+        }
+
+        int maxBit = 0;
+        for (int i = 19; i >= 0; i--) {
+            if ((maxNum & (1 << i)) > 0) {
+                maxBit = i;
+                break;
+            }
+        }
+
+        int res = 0;
+        for (int i = maxBit; i >= 0; i--) {
+            for (int num : set) {
+                int max;
+                int min;
+
+                int cur = ((num ^ res) >> (i + 1) << (i + 1));
+                // 当前位为 1
+                if ((num & (1 << i)) > 0) {
+                    max = Math.min(cur + (1 << i) - 1, num - 1);
+                    min = Math.max(cur, (num + 1) >> 1);
+
+                // 当前位为 0
+                } else {
+                    max = Math.min(cur + (1 << (i + 1)) - 1, num - 1);
+                    min = Math.max(cur + (1 << i), (num + 1) >> 1);
+                }
+
+                if (min > max) {
+                    continue;
+                }
+                if (bit.queryForSum(min, max + 1) > 0) {
+                    res |= (1 << i);
+                    break;
+                }
+            }
+        }
+
+        return res;
     }
 
 
+    class BIT {
+        int[] sum;
+        int size;
+
+        public BIT(int length) {
+            this.size = length + 1;
+            sum = new int[this.size];
+        }
+
+        private int lowbit(int x) {
+            return x & (-x);
+        }
+
+        // 单点更新：下标 index 添加 value
+        public void add(int index, int value) {
+            // bit 需要从 1 开始
+            for (index++; index < this.size; index += lowbit(index)) {
+                this.sum[index] += value;
+            }
+        }
+
+        // 区间查询，前闭后开区间 [left, right)
+        public int queryForSum(int left, int right) {
+            return queryForSum(right) - queryForSum(left);
+        }
+
+        // 前缀区间查询，前闭后开区间 [0, index)
+        public int queryForSum(int index) {
+            int res = 0;
+            for (; index > 0; index -= lowbit(index)) {
+                res += this.sum[index];
+            }
+            return res;
+        }
+    }
+
 }
+
+
