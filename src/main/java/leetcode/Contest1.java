@@ -1,10 +1,5 @@
-package leetcode.contest;
+package leetcode;
 
-
-import javafx.util.Pair;
-import utils.AlgorithmUtils;
-
-import java.util.*;
 
 /**
  */

@@ -1,9 +1,7 @@
-package leetcode.contest.contest_368_vp;
+package leetcode.contest_vp.contest_368_vp;
 
 
 import utils.AlgorithmUtils;
-
-import java.util.Arrays;
 
 /**
  * @author gusixue
