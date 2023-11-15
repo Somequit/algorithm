@@ -25,18 +25,12 @@ public class Contest1 {
      * @return
      */
     private int solution(int[] nums) {
-        if (nums.length < 2) {
+        if (nums.length < 3) {
             return -1;
         }
-        Arrays.sort(nums);
-
-        for (int num : nums) {
-            if (num > nums[0] && num < nums[nums.length - 1]) {
-                return num;
-            }
-        }
-
-        return -1;
+        // 只对前三个数排序
+        Arrays.sort(nums, 0, 3);
+        return nums[1];
     }
 
 
