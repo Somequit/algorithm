@@ -104,30 +104,27 @@ public class Contest4 {
         for (int i = 0; i < m; i++) {
             Arrays.fill(memo[i], -1);
         }
-        int resMax = recursionDigitDP(0, 0, max_sum, true, false);
-
-        // 初始化，-1 表示没有计算过
-        for (int i = 0; i < m; i++) {
-            Arrays.fill(memo[i], -1);
-        }
-        int resMin = recursionDigitDP(0, 0, min_sum - 1, true, false);
-
-        return (resMax - resMin + this.mod) % this.mod;
+        return recursionDigitDP(0, 0, min_sum, max_sum, true, false);
     }
 
     /**
      * 数位 DP 模板：记忆化搜索获取合法数字的个数
      * @param curIndex 从 i 位开始填数字，i 前面填的数字和是 mask
      * @param mask 数字和
+     * @param minSum 数字和最小值
      * @param maxSum 数字和最大值
      * @param isLimit 前面填写的数字是否与 s 对应上，如果为 true 当前最大为 int(s[i])，否则当前最大为 9
      * @param isNum 前面是否填写过数字（即处理前导零用），如果为 true 当前可以从 0 开始，否则可以 跳过 或 从 1 开始
      * @return 返回合法数字的个数
      */
-    private int recursionDigitDP(int curIndex, int mask, int maxSum, boolean isLimit, boolean isNum) {
+    private int recursionDigitDP(int curIndex, int mask, int minSum, int maxSum, boolean isLimit, boolean isNum) {
+        if (mask > maxSum) {
+            return 0;
+        }
+
         // isNum 为 true 表示得到了一个合法数字
         if (curIndex == s.length) {
-            return isNum ? 1 : 0;
+            return (mask >= minSum && isNum) ? 1 : 0;
         }
 
         // isLimit 为 true（前面与 s 一样）以及 isNum 为 false（前面全没有填）仅有一种情况，不需要记忆化
@@ -138,7 +135,7 @@ public class Contest4 {
         int res = 0;
         // isNum：前面是否填写过数字（即处理前导零用），可以跳过当前数位
         if (!isNum) {
-            res = recursionDigitDP(curIndex + 1, mask, maxSum, false, false);
+            res = recursionDigitDP(curIndex + 1, mask, minSum, maxSum, false, false);
         }
 
         // isLimit：前面填写的数字是否与 s 对应上，如果为 true 当前最大为 int(s[i])，否则当前最大为 9（否则就超过 n 啦）
@@ -147,7 +144,7 @@ public class Contest4 {
         for (int d = isNum ? 0 : 1; d <= up; d++) {
             // 填 d 后不超过 max_sum
             if (mask + d <= maxSum) {
-                res += recursionDigitDP(curIndex + 1, mask + d, maxSum, isLimit && d == up, true);
+                res += recursionDigitDP(curIndex + 1, mask + d, minSum, maxSum, isLimit && d == up, true);
                 res %= this.mod;
             }
         }
