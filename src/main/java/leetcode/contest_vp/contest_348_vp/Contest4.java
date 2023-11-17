@@ -118,10 +118,6 @@ public class Contest4 {
      * @return 返回合法数字的个数
      */
     private int recursionDigitDP(int curIndex, int mask, int minSum, int maxSum, boolean isLimit, boolean isNum) {
-        if (mask > maxSum) {
-            return 0;
-        }
-
         // isNum 为 true 表示得到了一个合法数字
         if (curIndex == s.length) {
             return (mask >= minSum && isNum) ? 1 : 0;

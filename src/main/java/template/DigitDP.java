@@ -38,7 +38,10 @@ public class DigitDP {
      * @return 返回合法数字的个数
      */
     private int recursionDigitDP(int curIndex, int mask, boolean isLimit, boolean isNum) {
-        // isNum 为 true 表示得到了一个合法数字
+        /**
+         * 仅有此位置最终定义是否合法
+         * isNum 为 true 表示得到了一个合法数字
+         */
         if (curIndex == s.length) {
             return isNum ? 1 : 0;
         }
@@ -54,11 +57,17 @@ public class DigitDP {
             res = recursionDigitDP(curIndex + 1, mask, false, false);
         }
 
-        // isLimit：前面填写的数字是否与 s 对应上，如果为 true 当前最大为 int(s[i])，否则当前最大为 9（否则就超过 n 啦）
+        /**
+         * 判读最大值
+         * isLimit：前面填写的数字是否与 s 对应上，如果为 true 当前最大为 int(s[i])，否则当前最大为 9（否则就超过 n 啦）
+         */
         int up = isLimit ? s[curIndex] - '0' : 9;
         // 枚举要填入的数字 d，isNum：如果为 true 当前可以从 0 开始，否则可以 跳过 或 从 1 开始
         for (int d = isNum ? 0 : 1; d <= up; d++) {
-            // d 不在 mask 中
+            /**
+             * 判断合法情况
+             * d 不在 mask 中
+             */
             if ((mask >> d & 1) == 0) {
                 res += recursionDigitDP(curIndex + 1, mask | (1 << d), isLimit && d == up, true);
             }
@@ -68,6 +77,6 @@ public class DigitDP {
         if (!isLimit && isNum) {
             memo[curIndex][mask] = res;
         }
-            return res;
+        return res;
     }
 }
