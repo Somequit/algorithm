@@ -1,4 +1,4 @@
-package leetcode.brushQuestions;
+package leetcode.brushQuestions.easy;
 
 import java.util.HashMap;
 import java.util.Map;

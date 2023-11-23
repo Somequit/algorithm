@@ -1,6 +1,5 @@
-package leetcode.brushQuestions;
+package leetcode.brushQuestions.medium;
 
-import leetcode.contest.ContestTest;
 import utils.AlgorithmUtils;
 
 import java.util.Arrays;

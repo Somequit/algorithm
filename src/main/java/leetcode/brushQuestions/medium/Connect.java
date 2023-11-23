@@ -1,7 +1,6 @@
-package leetcode.brushQuestions;
+package leetcode.brushQuestions.medium;
 
 import javafx.util.Pair;
-import template.Algorithm;
 import utils.AlgorithmUtils;
 import utils.TreeNode;
 

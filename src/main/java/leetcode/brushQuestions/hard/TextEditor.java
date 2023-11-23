@@ -1,4 +1,4 @@
-package leetcode.brushQuestions;
+package leetcode.brushQuestions.hard;
 
 /**
  * @author gusixue

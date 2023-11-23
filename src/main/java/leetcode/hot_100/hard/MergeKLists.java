@@ -1,11 +1,9 @@
 package leetcode.hot_100.hard;
 
 import leetcode.ListNode;
-import leetcode.brushQuestions.CombinationSum2;
 import utils.AlgorithmUtils;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
