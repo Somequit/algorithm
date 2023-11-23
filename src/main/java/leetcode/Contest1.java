@@ -22,7 +22,7 @@ public class Contest1 {
     /**
      * @return
      */
-    private int solution(int n, int m) {
+    private int solution() {
 
         return 0;
     }
