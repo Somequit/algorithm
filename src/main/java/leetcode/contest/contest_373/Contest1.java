@@ -23,9 +23,29 @@ public class Contest1 {
     /**
      * @return
      */
-    private int solution() {
+    private boolean solution(int[][] mat, int k) {
+        int m = mat.length;
+        int n = mat[0].length;
+        k %= n;
 
-        return 0;
+        if (k == 0) {
+            return true;
+        }
+
+        int gcdKN = gcd(k, n);
+
+        for (int i = 0; i < m; i++) {
+            for (int j = gcdKN; j < n; j++) {
+                if (mat[i][j] != mat[i][j % gcdKN]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
+    private int gcd(int a,int b){
+        return (a == 0 ? b : gcd(b % a, a));
     }
 
 
