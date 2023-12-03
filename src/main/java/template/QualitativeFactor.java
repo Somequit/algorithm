@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @author gusixue
- * @description 质因数分解
+ * @description 质因数分解模板
  * @date 2023/11/18
  */
 public class QualitativeFactor {

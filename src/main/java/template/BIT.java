@@ -2,7 +2,7 @@ package template;
 
 /**
  * @author gusixue
- * @description
+ * @description 树状数组模板
  * @date 2023/11/7
  */
 public class BIT {

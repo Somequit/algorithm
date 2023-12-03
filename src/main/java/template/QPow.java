@@ -2,7 +2,7 @@ package template;
 
 /**
  * @author gusixue
- * @description 快速幂
+ * @description 快速幂模板
  * @date 2023/11/12
  */
 public class QPow {

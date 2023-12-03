@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @author gusixue
- * @description
+ * @description DFS 遍历多叉树模板
  * @date 2023/11/5
  */
 public class DfsTree {

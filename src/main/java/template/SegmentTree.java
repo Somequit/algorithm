@@ -3,7 +3,7 @@ package template;
 
 /**
  * @author gusixue
- * @description
+ * @description 线段树模板
  * @date 2023/10/29
  */
 public class SegmentTree {

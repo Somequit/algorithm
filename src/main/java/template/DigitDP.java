@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * @author gusixue
- * @description 数位 DP：https://www.bilibili.com/video/BV1rS4y1s721/?vd_source=80d151ace5ad19ab5c5a7674da5e4e19
+ * @description 数位 DP 模板：https://www.bilibili.com/video/BV1rS4y1s721/?vd_source=80d151ace5ad19ab5c5a7674da5e4e19
  * 2376. 统计特殊整数
  * 如果一个正整数每一个数位都是 互不相同 的，我们称它是 特殊整数 。
  * 给你一个 正 整数 n ，请你返回区间 [1, n] 之间特殊整数的数目。

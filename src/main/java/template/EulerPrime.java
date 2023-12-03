@@ -2,7 +2,7 @@ package template;
 
 /**
  * @author gusixue
- * @description 欧拉筛（线性筛）：每个合数只被划掉（最小质因子）一次
+ * @description 欧拉筛（线性筛）模板：每个合数只被划掉（最小质因子）一次
  * @date 2023/11/19
  */
 public class EulerPrime {

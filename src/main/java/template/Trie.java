@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * @author gusixue
- * @description
+ * @description 字典树模板
  * @date 2023/11/4
  */
 public class Trie {
