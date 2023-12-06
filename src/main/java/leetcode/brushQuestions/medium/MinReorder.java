@@ -12,7 +12,7 @@ import java.util.*;
 public class MinReorder {
 
     /**
-     * 正难则反 DFS：
+     * 正难则反 DFS + 无向图转有向图：
      *
      * 第 1 步：
      * 先建立一个无向图 G0
@@ -34,7 +34,7 @@ public class MinReorder {
      * 注意仅有一种修改结果
      *
      * 第 5 步：
-     * 答案就是：total(=n-1) - edge
+     * 答案就是：total(即 n-1) - edge
      * 时间复杂度：O（n），空间复杂度：O（n）
      *
      */
