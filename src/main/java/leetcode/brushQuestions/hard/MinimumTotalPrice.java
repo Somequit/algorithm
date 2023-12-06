@@ -12,16 +12,24 @@ import java.util.List;
 public class MinimumTotalPrice {
 
     /**
-     * DFS + 树上DP：
+     * 暴力 DFS + 树形 DP：
      *
      * 第 1 步：
-     * 求出每个点使用次数 * 价格
-     *
+     * 思考在不折半的情况下，每次旅行的最小值：start 到 end 的最短路径（不走回头路）
      *
      * 第 2 步：
-     * 树上 dp[i][0]- i不折半，dp[i][1] - i折半
+     * 先建树，然后枚举 trips 计算每次 start 到 end 的最短路径
+     * 找到该路径所有点，求出每个点使用 次数 * 价格
+     * 此时问题转化为：每个点的价格固定（次数 * 价格），求 非相邻节点 后、所有节点总和的最小值
      *
-     *
+     * 第 3 步：
+     * 类似：337. 打家劫舍 III
+     * 树形 DP
+     * dp[i][j] 代表 i 子树处、所有旅行的最小价格总和，j=0-不折半，j=1-i折半
+     * 动规转移方程：
+     *     * dp[i][0] = min(dp[child][0]，dp[child][1]) + pointPrice[i]，i 不折半则 i 的孩子可以折半也可以不折半，
+     *     * dp[i][1] = dp[child][0] + pointPrice[i]/2，i 折半则 i 的孩子一定不折半，
+     * 时间复杂度：O（n * m），空间复杂度：O（n）
      */
     public int minimumTotalPrice(int n, int[][] edges, int[] price, int[][] trips) {
         // 建树
@@ -47,7 +55,7 @@ public class MinimumTotalPrice {
             }
         }
 
-        // 树上 dp[i][0]- i不折半，dp[i][1] - i折半
+        // dp[i][j] 代表 i 子树处、所有旅行的最小价格总和，j=0-不折半，j=1-i折半
         int[][] dp = new int[n][2];
 
         dfsMinPrice(0, -1, treeList, pointPrice, dp);
@@ -58,7 +66,7 @@ public class MinimumTotalPrice {
     }
 
     /**
-     * 树上 dp[i][0]- i不折半，dp[i][1] - i折半
+     * dp[i][j] 代表 i 子树处、所有旅行的最小价格总和，j=0-不折半，j=1-i折半
      */
     private void dfsMinPrice(int son, int father, List<Integer>[] treeList, int[] pointPrice, int[][] dp) {
 
