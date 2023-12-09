@@ -28,20 +28,22 @@ public class Contest1 {
     public int[] findIntersectionValues(int[] nums1, int[] nums2) {
         int[] res = new int[2];
 
-        Set<Integer> numSet2 = new HashSet<>(Arrays.stream(nums2).boxed().collect(Collectors.toList()));
-        for (int num : nums1) {
-            if (numSet2.contains(num)) {
-                res[0]++;
-            }
-        }
+        res[0] = getIntersectionValues(nums1, nums2);
+        res[1] = getIntersectionValues(nums2, nums1);
+        return res;
+    }
 
-        Set<Integer> numSet1 = new HashSet<>(Arrays.stream(nums1).boxed().collect(Collectors.toList()));
+    private int getIntersectionValues(int[] nums1, int[] nums2) {
+        int res = 0;
+        Set<Integer> set = new HashSet<>();
         for (int num : nums2) {
-            if (numSet1.contains(num)) {
-                res[1]++;
+            set.add(num);
+        }
+        for (int num : nums1) {
+            if (set.contains(num)) {
+                res++;
             }
         }
-
         return res;
     }
 
