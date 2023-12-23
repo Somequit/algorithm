@@ -1,7 +1,6 @@
-package leetcode;
+package leetcode.contest.double_120;
 
 import java.util.*;
-
 /**
  */
 public class Contest1 {
