@@ -20,14 +20,14 @@ public class Contest4 {
     }
 
     /**
-     * Java +  + 数位 DP：
+     * Java + 记忆化搜索的数位 DP 模板 + 特判
+     *
      * 第 1 步：
      * 根据题意可以想到"记忆化搜素的数位 DP 模板"，
      *
-     *
      * 第 2 步：
      * 计算 [0, finish] - [0, start-1]，将其置为 maxNum，
-     * 将 maxNum 中超过 s 的前面位 sChar 取出来，其可以直接套用"记忆化搜素的数位 DP 模板"，
+     * 将 maxNum 中超过 s 的前面位 sChar 取出来，其可以直接套用"记忆化搜索的数位 DP 模板"，
      * 注意套用模板时，每一位的上限为 limit，它可能小于 sChar[curIndex]，如果这样后面也是随便，
      *
      * 第 3 步：
@@ -49,7 +49,7 @@ public class Contest4 {
             return 0;
         }
 
-        // 将 maxNum 中超过 s 的前面位 sChar 取出来，其可以直接套用"记忆化搜素的数位 DP 模板"
+        // 将 maxNum 中超过 s 的前面位 sChar 取出来，其可以直接套用"记忆化搜索的数位 DP 模板"
         sChar = (maxNum + "").substring(0, (maxNum + "").length() - s.length()).toCharArray();
         int m = sChar.length;
 
@@ -58,7 +58,7 @@ public class Contest4 {
         // 初始化，-1 表示没有计算过
         Arrays.fill(memo, -1);
 
-        // 记忆化搜素的数位 DP 模板，注意 0+s 可能可以
+        // 记忆化搜索的数位 DP 模板，注意 0+s 可能可以
         long res = recursionDigitDP(0, limit, true, false) + 1;
 
         // s 大于 maxNum 对应的位置，sChar 均不大于 limit，此时 DP 中取了不能取的 sChar+s
