@@ -1,9 +1,7 @@
 package leetcode.hot_100.medium;
 
+import leetcode.hot_100.first.medium.LongestConsecutive;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 /**
  * @author gusixue

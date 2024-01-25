@@ -1,14 +1,11 @@
 package leetcode.hot_100.hard;
 
+import leetcode.hot_100.first.hard.RemoveInvalidParentheses;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.junit.Assert.*;
 
 /**
  * @author gusixue
