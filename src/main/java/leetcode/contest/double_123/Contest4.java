@@ -22,43 +22,35 @@ public class Contest4 {
     /**
      * @return
      */
-    public int numberOfPairs(int[][] points) {
-        Arrays.sort(points, (o1, o2) -> {
-            if (o1[0] == o2[0]) {
-                return o2[1] - o1[1];
-            } else {
-                return o1[0] - o2[0];
-            }
-        });
-
-        int n = points.length;
-
-        int[] minPoint = new int[n];
-        minPoint[0] = points[0][1];
-        for (int i = 1; i < n; i++) {
-            minPoint[i] = Math.min(minPoint[i - 1], points[i][1]);
-        }
-
-        int res = 0;
-        for (int i = 1; i < n; i++) {
-            int maxPoint = Integer.MAX_VALUE;
-            for (int j = i - 1; j >= 0; j--) {
-                if (points[j][1] < points[i][1]) {
-                    continue;
+    class Solution {
+        public int numberOfPairs(int[][] points) {
+            Arrays.sort(points, (o1, o2) -> {
+                if (o1[0] == o2[0]) {
+                    return o2[1] - o1[1];
+                } else {
+                    return o1[0] - o2[0];
                 }
+            });
 
-                if (points[j][1] < maxPoint) {
-                    res++;
+            int n = points.length;
 
-                    if (points[j][1] == minPoint[j]) {
-                        break;
+            int res = 0;
+            for (int i = 1; i < n; i++) {
+                int maxPoint = Integer.MAX_VALUE;
+                for (int j = i - 1; j >= 0; j--) {
+                    if (points[j][1] < points[i][1]) {
+                        continue;
                     }
-                    maxPoint = points[j][1];
+
+                    if (points[j][1] < maxPoint) {
+                        res++;
+                        maxPoint = points[j][1];
+                    }
                 }
             }
-        }
 
-        return res;
+            return res;
+        }
     }
 
 
