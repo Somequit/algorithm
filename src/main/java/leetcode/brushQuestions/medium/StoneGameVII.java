@@ -9,13 +9,20 @@ public class StoneGameVII {
 
     /**
      * Java + dp + 前缀和
-     *
      */
     public int stoneGameVII(int[] stones) {
         int n = stones.length;
 
-        // 第 i 次，最左边为第 j 个石头，0-爱丽丝的得分 1-鲍勃的得分
-        int[][][] dp = new int[n][n + 1][2];
+        // 石头堆在 i 到 j 时，自己减去对方的最大得分差（可能是爱丽丝、也可能是鲍勃）
+        int[][] dp = new int[n][n];
+        // 初始化 dp[i][i]=0 即删完后没有分差，其他为 -1 代表记忆化求出
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j) {
+                    dp[i][j] = -1;
+                }
+            }
+        }
 
         // 前缀和求区间和（方便求解，向右移动一位）
         int[] prefixSum = new int[n + 1];
@@ -23,64 +30,24 @@ public class StoneGameVII {
             prefixSum[i] = prefixSum[i - 1] + stones[i - 1];
         }
 
-        // 初始化第一次爱丽丝扩大得分的差值
-        dp[0][0][0] = Math.max(prefixSum[n - 1] - prefixSum[0], prefixSum[n] - prefixSum[1]);
-        dp[0][1][0] = dp[0][0][0];
+        // 使用记忆化搜索解决
+        memorySearch(dp, 0, n - 1, prefixSum);
 
-        // 循环每次游戏
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < i + 2; j++) {
-                // 爱丽丝扩大得分的差值
-                if (i % 2 == 0) {
-                    // 选左或者选右的最大得分的差值，求出 [j, j+n-i-1)
-                    if (j == 0 || (j != i + 1 && dp[i - 1][j - 1][0] - dp[i - 1][j - 1][1] < dp[i - 1][j][0] - dp[i - 1][j][1])) {
-                        dp[i][j][1] = dp[i - 1][j][1];
-                        dp[i][j][0] = dp[i - 1][j][0] + (prefixSum[j + n - i - 1] - prefixSum[j]);
+        return dp[0][n - 1];
+    }
 
-                    } else {
-                        dp[i][j][1] = dp[i - 1][j - 1][1];
-                        dp[i][j][0] = dp[i - 1][j - 1][0] + (prefixSum[j + n - i - 1] - prefixSum[j]);
-                    }
-
-                    // 鲍勃减小得分的差值
-                } else {
-                    dp[i][j][0] = dp[i - 1][j][0];
-                    // 选左或者选右的最小得分的差值，求出 [j, j+n-i-1)
-                    if (j == 0 || (j != i + 1 && dp[i - 1][j - 1][0] - dp[i - 1][j - 1][1] > dp[i - 1][j][0] - dp[i - 1][j][1])) {
-                        dp[i][j][0] = dp[i - 1][j][0];
-                        dp[i][j][1] = dp[i - 1][j][1] + (prefixSum[j + n - i - 1] - prefixSum[j]);
-
-                    } else {
-                        dp[i][j][0] = dp[i - 1][j - 1][0];
-                        dp[i][j][1] = dp[i - 1][j - 1][1] + (prefixSum[j + n - i - 1] - prefixSum[j]);
-                    }
-                }
-            }
+    private int memorySearch(int[][] dp, int left, int right, int[] prefixSum) {
+        if (right - left <= 0) {
+            return 0;
+        }
+        if (dp[left][right] != -1) {
+            return dp[left][right];
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n + 1; j++) {
-                System.out.print(dp[i][j][0] + " : " + dp[i][j][1] + "\t");
-            }
-            System.out.println();
-        }
+        // 选左侧或者右侧，保证分差最大
+        dp[left][right] = Math.max(prefixSum[right + 1] - prefixSum[left + 1] - memorySearch(dp, left + 1, right, prefixSum),
+                prefixSum[right] - prefixSum[left] - memorySearch(dp, left, right - 1, prefixSum));
 
-        int res = 0;
-        // 最后一次游戏，爱丽丝扩大得分的差值
-        if ((n - 1) % 2 == 0) {
-            res = Integer.MIN_VALUE;
-            for (int j = 0; j <= n; j++) {
-                res = Math.max(res, dp[n - 1][j][0] - dp[n - 1][j][1]);
-            }
-
-            // 最后一次游戏，鲍勃减小得分的差值
-        } else {
-            res = Integer.MAX_VALUE;
-            for (int j = 0; j <= n; j++) {
-                res = Math.min(res, dp[n - 1][j][0] - dp[n - 1][j][1]);
-            }
-        }
-
-        return res;
+        return dp[left][right];
     }
 }
