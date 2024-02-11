@@ -50,11 +50,11 @@ public class KMP {
      * @param next next数组
      * @return
      */
-    public List<Integer> KmpMatchTotal(String matchStr, String patternStr, int[] next) {
+    public List<Integer> kmpMatchTotal(String matchStr, String patternStr, int[] next) {
         List<Integer> res = new ArrayList<>();
 
         for (int i = 0, j = 0; i < matchStr.length(); i++) {
-            if (j > 0 && matchStr.charAt(i) != patternStr.charAt(j)){
+            while (j > 0 && matchStr.charAt(i) != patternStr.charAt(j)){
                 j = next[j - 1];
             }
 
