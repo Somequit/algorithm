@@ -17,9 +17,9 @@ public class EulerPrime {
     static {
         PRIMES_COUNT = 0;
 
-        boolean[] is_primes = new boolean[TOTAL + 1];
+        boolean[] not_primes = new boolean[TOTAL + 1];
         for (int i = 2; i <= TOTAL; i++) {
-            if (!is_primes[i]) {
+            if (!not_primes[i]) {
                 PRIMES[PRIMES_COUNT] = i;
                 PRIMES_COUNT++;
             }
@@ -31,7 +31,7 @@ public class EulerPrime {
                     break;
                 }
 
-                is_primes[i * p] = true;
+                not_primes[i * p] = true;
 
                 // p 是 lpf[i]
                 if (i % p == 0) {
