@@ -23,13 +23,13 @@ public class Contest4 {
      * @return
      */
     public int[] resultArray(int[] nums) {
-        TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+        TreeSet<Integer> treeSet = new TreeSet<>();
         for (int num : nums) {
-            treeMap.put(num, 1);
+            treeSet.add(num);
         }
         int count = 0;
         Map<Integer, Integer> map = new HashMap<>();
-        for (Integer key : treeMap.keySet()) {
+        for (Integer key : treeSet) {
             map.put(key, count);
             count++;
         }
