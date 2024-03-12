@@ -20,13 +20,13 @@ public class DiameterOfBinaryTree {
 
 
     @ToString
-    public class TreeNode {
+    public class TreeNodeNow {
         int val;
-        DiameterOfBinaryTree.TreeNode left;
-        DiameterOfBinaryTree.TreeNode right;
-        TreeNode() {}
-        TreeNode(int val) { this.val = val; }
-        TreeNode(int val, DiameterOfBinaryTree.TreeNode left, DiameterOfBinaryTree.TreeNode right) {
+        DiameterOfBinaryTree.TreeNodeNow left;
+        DiameterOfBinaryTree.TreeNodeNow right;
+        TreeNodeNow() {}
+        TreeNodeNow(int val) { this.val = val; }
+        TreeNodeNow(int val, DiameterOfBinaryTree.TreeNodeNow left, DiameterOfBinaryTree.TreeNodeNow right) {
             this.val = val;
             this.left = left;
             this.right = right;
@@ -39,30 +39,30 @@ public class DiameterOfBinaryTree {
         System.out.println(listTree);
 
         DiameterOfBinaryTree diameterOfBinaryTree = new DiameterOfBinaryTree();
-        TreeNode root = diameterOfBinaryTree.createTree(listTree);
+        TreeNodeNow root = diameterOfBinaryTree.createTree(listTree);
         System.out.println(root);
 
         int res = diameterOfBinaryTree.solution(root);
         System.out.println(res);
     }
 
-    private TreeNode createTree(List<Integer> listTree) {
+    private TreeNodeNow createTree(List<Integer> listTree) {
         if (listTree == null || listTree.size() == 0) {
             return null;
         }
 
-        TreeNode root = new TreeNode(listTree.get(0));
-        Queue<TreeNode> queue = new ConcurrentLinkedQueue<>();
+        TreeNodeNow root = new TreeNodeNow(listTree.get(0));
+        Queue<TreeNodeNow> queue = new ConcurrentLinkedQueue<>();
         queue.add(root);
         for (int i = 1; i < listTree.size(); i+=2) {
-            TreeNode node = queue.poll();
+            TreeNodeNow node = queue.poll();
 
             if (listTree.get(i) != null) {
-                node.left = new TreeNode(listTree.get(i));
+                node.left = new TreeNodeNow(listTree.get(i));
                 queue.add(node.left);
             }
             if (i + 1 < listTree.size() && listTree.get(i + 1) != null) {
-                node.right = new TreeNode(listTree.get(i + 1));
+                node.right = new TreeNodeNow(listTree.get(i + 1));
                 queue.add(node.right);
             }
         }
@@ -78,7 +78,7 @@ public class DiameterOfBinaryTree {
      * @param root
      * @return
      */
-    private int solution(TreeNode root) {
+    private int solution(TreeNodeNow root) {
         if (root == null) {
             return 0;
         }
@@ -87,7 +87,7 @@ public class DiameterOfBinaryTree {
         return res;
     }
 
-    private int maxDiameter(TreeNode node) {
+    private int maxDiameter(TreeNodeNow node) {
         if (node == null) {
             return 0;
         }

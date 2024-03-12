@@ -19,13 +19,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class IsSymmetric {
     @ToString
-    public class TreeNode {
+    public class TreeNodeNow {
         int val;
-        IsSymmetric.TreeNode left;
-        IsSymmetric.TreeNode right;
-        TreeNode() {}
-        TreeNode(int val) { this.val = val; }
-        TreeNode(int val, IsSymmetric.TreeNode left, IsSymmetric.TreeNode right) {
+        IsSymmetric.TreeNodeNow left;
+        IsSymmetric.TreeNodeNow right;
+        TreeNodeNow() {}
+        TreeNodeNow(int val) { this.val = val; }
+        TreeNodeNow(int val, IsSymmetric.TreeNodeNow left, IsSymmetric.TreeNodeNow right) {
             this.val = val;
             this.left = left;
             this.right = right;
@@ -38,33 +38,33 @@ public class IsSymmetric {
         System.out.println(listTree);
 
         IsSymmetric isSymmetric = new IsSymmetric();
-        IsSymmetric.TreeNode root = isSymmetric.createTree(listTree);
+        IsSymmetric.TreeNodeNow root = isSymmetric.createTree(listTree);
         System.out.println(root);
 
         boolean res = isSymmetric.solution(root);
         System.out.println(res);
     }
 
-    private TreeNode createTree(List<Integer> listTree) {
+    private TreeNodeNow createTree(List<Integer> listTree) {
         if (CollectionUtils.isEmpty(listTree) || listTree.get(0) == null) {
             return null;
         }
 
-        TreeNode root = new TreeNode(listTree.get(0));
-        Queue<TreeNode> queue = new ConcurrentLinkedQueue<>();
+        TreeNodeNow root = new TreeNodeNow(listTree.get(0));
+        Queue<TreeNodeNow> queue = new ConcurrentLinkedQueue<>();
         queue.add(root);
         for (int i = 1; i < listTree.size(); i+=2) {
-            TreeNode node = queue.poll();
+            TreeNodeNow node = queue.poll();
             if (node == null) {
                 break;
             }
 
             if (listTree.get(i) != null) {
-                node.left = new TreeNode(listTree.get(i));
+                node.left = new TreeNodeNow(listTree.get(i));
                 queue.add(node.left);
             }
             if (i + 1 < listTree.size() && listTree.get(i + 1) != null) {
-                node.right = new TreeNode(listTree.get(i + 1));
+                node.right = new TreeNodeNow(listTree.get(i + 1));
                 queue.add(node.right);
             }
         }
@@ -77,7 +77,7 @@ public class IsSymmetric {
      * @param root
      * @return
      */
-    private boolean solution(TreeNode root) {
+    private boolean solution(TreeNodeNow root) {
         if (root == null) {
             return true;
         }
@@ -85,7 +85,7 @@ public class IsSymmetric {
         return traversalTree(root.left, root.right);
     }
 
-    private boolean traversalTree(TreeNode lTree, TreeNode rTree) {
+    private boolean traversalTree(TreeNodeNow lTree, TreeNodeNow rTree) {
         if (lTree == null && rTree == null) {
             return true;
         } else if (lTree == null || rTree == null) {
