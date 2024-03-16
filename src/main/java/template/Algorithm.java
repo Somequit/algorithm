@@ -1,6 +1,7 @@
 package template;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * @author gusixue
@@ -15,16 +16,28 @@ public class Algorithm {
         stringBeforeAdd("1234567", 6, "0");
 
         // 离散化
-//        TreeSet<Integer> treeSet = new TreeSet<>();
-//        for (int num : nums) {
-//            treeSet.add(num);
-//        }
-//        int count = 0;
-//        Map<Integer, Integer> map = new HashMap<>();
-//        for (Integer key : treeSet) {
-//            map.put(key, count);
-//            count++;
-//        }
+        discretizing(Arrays.asList());
+
+        // 创建集合数组
+        createCollectionArrayByStream();
+    }
+
+    private static void createCollectionArrayByStream() {
+        int n = 10;
+        Set<Integer>[] edgesSet = Stream.generate(HashSet::new).limit(n).toArray(Set[]::new);
+    }
+
+    private static void discretizing(List<Integer> nums) {
+        TreeSet<Integer> treeSet = new TreeSet<>();
+        for (int num : nums) {
+            treeSet.add(num);
+        }
+        int count = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (Integer key : treeSet) {
+            map.put(key, count);
+            count++;
+        }
     }
 
     private static void stringBeforeAdd(String str, int len, String fill) {
