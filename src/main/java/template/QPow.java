@@ -7,6 +7,7 @@ package template;
  */
 public class QPow {
 
+    // 注意不能对 pow 取模
     private long qPow(long value, long pow, long mod) {
         long res = 1;
         while (pow > 0) {
