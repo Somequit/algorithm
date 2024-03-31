@@ -22,7 +22,7 @@ public class Contest4 {
     /**
      * @return
      */
-    public int minimumDistance(int[][] points) {
+    public int minimumDistanceOld2(int[][] points) {
         int n = points.length;
 
         int[] resIndex = doMinimumDistance(points);
@@ -144,4 +144,113 @@ public class Contest4 {
     }
 
 
+    /**
+     * abs(xi-xj)+abs(yi-yj)，可以转化四种情况、总结起来就是：max(max(x+y)-min(x+y), max(x-y)-min(x-y))
+     * 找到 x+y、x-y 分别的最大与最小值四个点，然后分别删除每个点求到最小的结果
+     * 注意删掉某个点后，可能同时影响 x+y 与 x-y 的最值
+     * 为了方便编写，可以枚举删除每个点
+     */
+    public int minimumDistanceOld1(int[][] points) {
+        int n = points.length;
+        List<Integer> sumValIndex = new ArrayList<>();
+        List<Integer> diffValIndex = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            sumValIndex.add(i);
+            diffValIndex.add(i);
+        }
+
+        sumValIndex.sort(Comparator.comparingInt(i -> (points[i][0] + points[i][1])));
+        diffValIndex.sort(Comparator.comparingInt(i -> (points[i][0] - points[i][1])));
+        Integer maxSumIndex = sumValIndex.get(n - 1);
+        Integer minSumIndex = sumValIndex.get(0);
+        Integer maxDiffIndex = diffValIndex.get(n - 1);
+        Integer minDiffIndex = diffValIndex.get(0);
+
+        int res = Integer.MAX_VALUE;
+
+        // 删除 max(x+y)
+        diffValIndex.remove(maxSumIndex);
+        sumValIndex.remove(maxSumIndex);
+        res = Math.min(res, getMinimumDistance(points, sumValIndex, diffValIndex, n - 1));
+        diffValIndex.add(maxSumIndex);
+        sumValIndex.add(maxSumIndex);
+
+        // 删除 min(x+y)
+        diffValIndex.remove(minSumIndex);
+        sumValIndex.remove(minSumIndex);
+        res = Math.min(res, getMinimumDistance(points, sumValIndex, diffValIndex, n - 1));
+        diffValIndex.add(minSumIndex);
+        sumValIndex.add(minSumIndex);
+
+        // 删除 max(x-y)
+        diffValIndex.remove(maxDiffIndex);
+        sumValIndex.remove(maxDiffIndex);
+        res = Math.min(res, getMinimumDistance(points, sumValIndex, diffValIndex, n - 1));
+        diffValIndex.add(maxDiffIndex);
+        sumValIndex.add(maxDiffIndex);
+
+        // 删除 min(x-y)
+        diffValIndex.remove(minDiffIndex);
+        sumValIndex.remove(minDiffIndex);
+        res = Math.min(res, getMinimumDistance(points, sumValIndex, diffValIndex, n - 1));
+        diffValIndex.add(minDiffIndex);
+        sumValIndex.add(minDiffIndex);
+
+        return res;
+    }
+
+    private int getMinimumDistance(int[][] points, List<Integer> sumValIndex, List<Integer> diffValIndex, int n) {
+        sumValIndex.sort(Comparator.comparingInt(i -> (points[i][0] + points[i][1])));
+        diffValIndex.sort(Comparator.comparingInt(i -> (points[i][0] - points[i][1])));
+
+        // max(max(x+y)-min(x+y), max(x-y)-min(x-y))
+        return Math.max((points[sumValIndex.get(n - 1)][0] + points[sumValIndex.get(n - 1)][1])
+                        - (points[sumValIndex.get(0)][0] + points[sumValIndex.get(0)][1]),
+                (points[diffValIndex.get(n - 1)][0] - points[diffValIndex.get(n - 1)][1])
+                        - (points[diffValIndex.get(0)][0] - points[diffValIndex.get(0)][1]));
+    }
+
+
+    /**
+     * abs(xi-xj)+abs(yi-yj)，可以转化四种情况、总结起来就是：max(max(x+y)-min(x+y), max(x-y)-min(x-y))
+     * 找到 x+y、x-y 分别的最大与最小值四个点，然后分别删除每个点求到最小的结果
+     * 注意删掉某个点后，可能同时影响 x+y 与 x-y 的最值
+     * 为了方便编写，可以枚举删除每个点，并使用 TreeMap 增删
+     */
+    public int minimumDistance(int[][] points) {
+        int n = points.length;
+        TreeMap<Integer, Integer> sumVal = new TreeMap<>();
+        TreeMap<Integer, Integer> diffVal = new TreeMap<>();
+        for (int i = 0; i < n; i++) {
+            int x = points[i][0];
+            int y = points[i][1];
+            sumVal.merge(points[i][0] + points[i][1], 1, Integer::sum);
+            diffVal.merge(points[i][0] - points[i][1], 1, Integer::sum);
+        }
+
+        int res = Integer.MAX_VALUE;
+
+        // 枚举删除每个点即可
+        for (int i = 0; i < n; i++) {
+            Integer sum = points[i][0] + points[i][1];
+            Integer diff = points[i][0] - points[i][1];
+
+            sumVal.merge(sum, -1, Integer::sum);
+            if (sumVal.get(sum) == 0) {
+                sumVal.remove(sum);
+            }
+            diffVal.merge(diff, -1, Integer::sum);
+            if (diffVal.get(diff) == 0) {
+                diffVal.remove(diff);
+            }
+
+            // max(max(x+y)-min(x+y), max(x-y)-min(x-y))
+            res = Math.min(res, Math.max(sumVal.lastKey() - sumVal.firstKey(), diffVal.lastKey() - diffVal.firstKey()));
+
+            sumVal.merge(sum, 1, Integer::sum);
+            diffVal.merge(diff, 1, Integer::sum);
+        }
+
+        return res;
+    }
 }
