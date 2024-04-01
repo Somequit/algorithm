@@ -25,6 +25,12 @@ public class Algorithm {
     private static void createCollectionArrayByStream() {
         int n = 10;
         Set<Integer>[] edgesSet = Stream.generate(HashSet::new).limit(n).toArray(Set[]::new);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.sort(Comparator.naturalOrder());
     }
 
     private static void discretizing(List<Integer> nums) {
