@@ -25,6 +25,7 @@ public class Algorithm {
     private static void createCollectionArrayByStream() {
         int n = 10;
         Set<Integer>[] edgesSet = Stream.generate(HashSet::new).limit(n).toArray(Set[]::new);
+        Arrays.setAll(edgesSet, i -> new HashSet<>());
 
         List<Integer> list = new ArrayList<>();
         list.add(1);
