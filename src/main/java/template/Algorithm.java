@@ -1,6 +1,7 @@
 package template;
 
 import java.util.*;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -23,15 +24,35 @@ public class Algorithm {
     }
 
     private static void createCollectionArrayByStream() {
+        // 集合数组初始化
         int n = 10;
         Set<Integer>[] edgesSet = Stream.generate(HashSet::new).limit(n).toArray(Set[]::new);
         Arrays.setAll(edgesSet, i -> new HashSet<>());
 
+        // list.sort 排序
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
         list.add(3);
         list.sort(Comparator.naturalOrder());
+        list.sort(Comparator.reverseOrder());
+
+        // int 数组倒序：当然可以直接 Arrays.sort()，然后循环交换数组
+        int[] nums1 = new int[]{1, 5, 89, 2, 5, 8, 5, 5, 5};
+        nums1 = IntStream.of(nums1)
+        // 变为 Stream<Integer>
+        .boxed()
+        .sorted(Comparator.reverseOrder())
+        // 变为 IntStream
+        .mapToInt(Integer::intValue)
+        // 又变回 int[]
+        .toArray();
+        System.out.println(Arrays.toString(nums1));
+
+        // Integer 数组倒序
+        Integer[] nums2 = new Integer[]{1, 5, 2, 5, 8, 5, 5, 5};
+        Arrays.sort(nums2, Collections.reverseOrder());
+        System.out.println(Arrays.toString(nums2));
     }
 
     private static void discretizing(List<Integer> nums) {
