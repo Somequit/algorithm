@@ -24,68 +24,75 @@ public class Contest4 {
      * @return
      */
     public int[] minimumCost(int n, int[][] edges, int[][] query) {
-        int[] parent = new int[n];
-        int[] weight = new int[n];
-        unionFind(n, edges, parent, weight);
+        DSU dsu = new DSU(n);
+
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
+
+            dsu.union(u, v, w);
+        }
 
         int qLen = query.length;
         int[] res = new int[qLen];
         for (int i = 0; i < qLen; i++) {
-            int parentA = find(query[i][0], parent);
-            int parentB = find(query[i][1], parent);
-            if (query[i][0] == query[i][1]) {
+            int u = query[i][0];
+            int v = query[i][1];
+
+            if (u == v) {
                 res[i] = 0;
 
-            } else if (parentA != parentB) {
+            } else if (dsu.find(u) != dsu.find(v)) {
                 res[i] = -1;
 
             } else {
-                res[i] = weight[parent[parentA]];
+                res[i] = dsu.getCostByIndex(dsu.find(u));
             }
         }
+
         return res;
     }
 
-    /**
-     * 并查集将所有边对应的点连通，每条边（a，b）使用 a 指向 b
-     */
-    private int[] unionFind(int n, int[][] edges, int[] parent, int[] weight) {
-        int edgesLen = edges.length;
+    static class DSU {
+        // 代价为集合中所有边按位与
+        private final int[] cost;
+        private final int[] parent;
+        private final int size;
 
-        // 并查集中每个点指向的父亲点，刚开始是自己
-        for (int i = 0; i < n; i++) {
-            parent[i] = i;
-            weight[i] = (1 << 30) - 1;
+        public DSU(int n) {
+            this.size = n;
+
+            parent = new int[n];
+            cost = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parent[i] = i;
+                // (2^31)-1，31 位 1
+                cost[i] = Integer.MAX_VALUE;
+            }
         }
 
-        // 每条边（a，b）使用 a 指向 b
-        for (int i = 0; i < edgesLen; i++) {
-            int pointA = edges[i][0];
-            int pointB = edges[i][1];
-            int curWeight = edges[i][2];
-
-            union(pointA, pointB, parent, weight, curWeight);
+        public int find(int x) {
+            if (parent[x] != x) {
+                // 路径压缩
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
         }
 
-        return parent;
-    }
-
-    private void union(int pointA, int pointB, int[] parent, int[] weight, int curWeight) {
-        int parentA = find(pointA, parent);
-        int parentB = find(pointB, parent);
-        weight[parent[parentB]] &= weight[parent[parentA]];
-        weight[parent[parentB]] &= curWeight;
-        parent[parentA] = parent[parentB];
-    }
-
-    private int find(int pointA, int[] parent) {
-        if (parent[pointA] == pointA) {
-            return pointA;
+        public void union(int u, int v, int w) {
+            int xAncestor = find(u);
+            int yAncestor = find(v);
+            parent[xAncestor] = yAncestor;
+            cost[yAncestor] &= cost[xAncestor];
+            cost[yAncestor] &= w;
         }
-        // 路径压缩
-        parent[pointA] = find(parent[pointA], parent);
-        return parent[pointA];
+
+        public int getCostByIndex(int index) {
+            return cost[index];
+        }
     }
+
 
 
 }
