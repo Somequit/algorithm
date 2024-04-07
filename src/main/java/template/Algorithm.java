@@ -37,7 +37,7 @@ public class Algorithm {
         list.sort(Comparator.naturalOrder());
         list.sort(Comparator.reverseOrder());
 
-        // int 数组倒序：当然可以直接 Arrays.sort()，然后循环交换数组
+        // int 数组倒序排序：当然可以直接 Arrays.sort()，然后循环交换数组
         int[] nums1 = new int[]{1, 5, 89, 2, 5, 8, 5, 5, 5};
         nums1 = IntStream.of(nums1)
         // 变为 Stream<Integer>
@@ -53,6 +53,21 @@ public class Algorithm {
         Integer[] nums2 = new Integer[]{1, 5, 2, 5, 8, 5, 5, 5};
         Arrays.sort(nums2, Collections.reverseOrder());
         System.out.println(Arrays.toString(nums2));
+
+
+        // int 数组反转
+        int[] nums3 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        reverseArr(nums3);
+        System.out.println(Arrays.toString(nums3));
+    }
+
+    private static void reverseArr(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n / 2; i++) {
+            int temp = nums[i];
+            nums[i] = nums[n - i - 1];
+            nums[n - i - 1] = temp;
+        }
     }
 
     private static void discretizing(List<Integer> nums) {
