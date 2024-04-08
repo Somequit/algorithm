@@ -34,6 +34,7 @@ public class Algorithm {
         list.add(1);
         list.add(2);
         list.add(3);
+        list.add(4);
         list.sort(Comparator.naturalOrder());
         list.sort(Comparator.reverseOrder());
 
