@@ -14,7 +14,7 @@ public class GetCoprimes {
      * 序列中节点的值作为下标，放入 List[] 中，节点编号依次放入 List 中（进入节点添加、回溯节点删除），保证 List 的最后一个为相同值中最后加入的节点，
      * 序列中节点编号为 key，加入时间（从根节点递增）为 value 放入 HashMap，在找到编号后求最大的时间、即最近的祖先，
      * 每个节点遍历 List[] 数组 [1,50] 的值，如果互质则取出最后一个节点编号，通过 HashMap 找到最大的时间
-     * 也可以预处理 gcd 哪些互质，最多 50*50
+     * 预处理 gcd 哪些互质，最多 50*50
      */
     public int[] getCoprimes(int[] nums, int[][] edges) {
         Map<Integer, Integer> mapValTime = new HashMap<>();
