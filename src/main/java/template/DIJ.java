@@ -100,8 +100,13 @@ public class DIJ {
      * 空间复杂度：O（m）
      */
     static class DIJSparse {
-        private static final int INF = Integer.MAX_VALUE / 2; // 防止更新最短路时加法溢出
 
+        // 防止更新最短路时加法溢出
+        private static final int INF = Integer.MAX_VALUE / 2;
+
+        /**
+         * 邻接表
+         */
         private final List<int[]>[] edgesList;
 
         DIJSparse(int n, int[][] edges) {
@@ -126,7 +131,44 @@ public class DIJ {
          * 注意，如果需要找到 start 到所有点的最短路，则改成仅最后返回 dis 即可
          */
         public int shortestPath(int start, int end) {
+            int n = this.edgesList.length;
+            int[] dis = new int[n];
+            // 默认其他点为无穷，到自己为 0
+            Arrays.fill(dis, INF);
+            dis[start] = 0;
+
+            // 使用 dis值小顶堆，每次将未出现过的最小的 dis 弹出；v-dis
+            PriorityQueue<int[]> priorityQueue = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+            priorityQueue.add(new int[]{start, 0});
+
+            while (!priorityQueue.isEmpty()) {
+                int[] minPoints = priorityQueue.poll();
+
+                // 找到终点直接返回
+                if (minPoints[0] == end) {
+                    return minPoints[1];
+                }
+
+                // minPoints[0] 之前出现过则无需更新最短路
+                if (minPoints[1] > dis[minPoints[0]]) {
+                    continue;
+                }
+
+                // 更新 当前最短路的点 到过的其他点的最短距离
+                for (int[] nextPoints : this.edgesList[minPoints[0]]) {
+                    int v = nextPoints[0];
+                    int w = nextPoints[1];
+
+                    if (dis[v] > minPoints[1] + w) {
+                        dis[v] = minPoints[1] + w;
+                        priorityQueue.add(new int[]{v, dis[v]});
+                    }
+                }
+
+            }
+
             return -1;
         }
+
     }
 }
