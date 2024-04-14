@@ -11,6 +11,8 @@ public class SegmentTree {
     // 所有都是左闭右开区间！！！！！
     public Node root;
 
+    private static final long SEGMENT_TREE_INF = Long.MAX_VALUE;
+
     public long mod = 1_000_000_007;
 
     public class Node {
@@ -18,8 +20,10 @@ public class SegmentTree {
         public long left;
         public long right;
 
+        // 区间最小值
+        long min = SegmentTree.SEGMENT_TREE_INF;
         // 区间最大值
-        long max = 0;
+        long max = -SegmentTree.SEGMENT_TREE_INF;
         // 区间和
         long sum = 0;
         // 区间平方和
@@ -56,6 +60,11 @@ public class SegmentTree {
         updateWithNode(root, left, right, val);
     }
 
+    // 查询区间最小值
+    public long queryForMin(long left, long right) {
+        return queryForMinWithNode(root, left, right);
+    }
+
     // 查询区间最大值
     public long queryForMax(long left, long right) {
         return queryForMaxWithNode(root, left, right);
@@ -78,6 +87,7 @@ public class SegmentTree {
             node.square = 1L * nums[cur] * nums[cur];
             node.square %= mod;
             node.sum = nums[cur];
+            node.min = nums[cur];
             node.max = nums[cur];
             node.add = 0;
             return;
@@ -90,6 +100,25 @@ public class SegmentTree {
         pushUp(node);
     }
 
+    private long queryForMinWithNode(Node node, long left, long right) {
+        if (node == null) {
+            return 0;
+        }
+        if (node.left >= left && node.right <= right) {
+            return node.min;
+        }
+        long mid = (node.left + node.right) >> 1;
+        pushDown(node);
+        long res = SegmentTree.SEGMENT_TREE_INF;
+        if (left < mid) {
+            res = Math.min(queryForMinWithNode(node.leftNode, left, Math.min(right, mid)), res);
+        }
+        if (right > mid) {
+            res = Math.min(queryForMinWithNode(node.rightNode, Math.max(left, mid), right), res);
+        }
+        return res;
+    }
+
     private long queryForMaxWithNode(Node node, long left, long right) {
         if (node == null) {
             return 0;
@@ -99,7 +128,7 @@ public class SegmentTree {
         }
         long mid = (node.left + node.right) >> 1;
         pushDown(node);
-        long res = Long.MIN_VALUE;
+        long res = -SegmentTree.SEGMENT_TREE_INF;
         if (left < mid) {
             res = Math.max(queryForMaxWithNode(node.leftNode, left, Math.min(right, mid)), res);
         }
@@ -152,6 +181,7 @@ public class SegmentTree {
             node.square = val * val * (node.right - node.left);
             node.square %= mod;
             node.sum = (node.right - node.left) * val;
+            node.min = val;
             node.max = val;
             node.add = val;
             // 由于是重置操作，和add不太一样，将孩子节点清空
@@ -177,6 +207,7 @@ public class SegmentTree {
             node.square += val * val * (node.right - node.left) + 2 * val * node.sum;
             node.square %= mod;
             node.sum += (node.right - node.left) * val;
+            node.min += val;
             node.max += val;
             node.add += val;
             return;
@@ -222,12 +253,14 @@ public class SegmentTree {
             return;
         }
         node.leftNode.add += node.add;
+        node.leftNode.min += node.add;
         node.leftNode.max += node.add;
         node.leftNode.square += node.add * node.add * (node.leftNode.right - node.leftNode.left) + 2 * node.add * node.leftNode.sum;
         node.leftNode.square %= mod;
         node.leftNode.sum += node.add * (node.leftNode.right - node.leftNode.left);
 
         node.rightNode.add += node.add;
+        node.rightNode.min += node.add;
         node.rightNode.max += node.add;
         node.rightNode.square += node.add * node.add * (node.rightNode.right - node.rightNode.left) + 2 * node.add * node.rightNode.sum;
         node.rightNode.square %= mod;
@@ -241,6 +274,7 @@ public class SegmentTree {
         if (node.leftNode != null && node.rightNode != null) {
             node.sum = node.leftNode.sum + node.rightNode.sum;
             node.square = (node.leftNode.square + node.rightNode.square) % mod;
+            node.min = Math.min(node.leftNode.min, node.rightNode.min);
             node.max = Math.max(node.leftNode.max, node.rightNode.max);
         }
     }
