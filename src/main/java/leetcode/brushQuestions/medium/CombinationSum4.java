@@ -79,4 +79,24 @@ public class CombinationSum4 {
             }
         }
     }
+
+
+    /**
+     * 不使用完全背包，直接考虑动态规划
+     * dp[i] 代表和为 i 总共有多少种情况，dp[i] += dp[i-nums[j]]
+     */
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+
+        for (int i = 1; i < target + 1; i++) {
+            for (int num : nums) {
+                if (i >= num) {
+                    dp[i] += dp[i - num];
+                }
+            }
+        }
+
+        return dp[target];
+    }
 }
