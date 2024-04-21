@@ -45,4 +45,20 @@ public class Factorial {
     private static long comb(int n, int k) {
         return FAC[n] * INV_FAC[k] % MOD * INV_FAC[n - k] % MOD;
     }
+
+    // 组合数
+    private static final long[][] COMBINATION;
+
+    static {
+        COMBINATION = new long[5001][5001];
+
+        for (int i = 0; i < COMBINATION.length; i++) {
+            COMBINATION[i][0] = 1;
+            COMBINATION[i][i] = 1;
+
+            for (int j = 1; j < i; j++) {
+                COMBINATION[i][j] = (COMBINATION[i - 1][j] + COMBINATION[i - 1][j - 1]) % MOD;
+            }
+        }
+    }
 }
