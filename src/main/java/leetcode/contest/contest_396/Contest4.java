@@ -25,7 +25,7 @@ public class Contest4 {
     /**
      * @return
      */
-    public int minCostToEqualizeArray(int[] nums, int cost1, int cost2) {
+    public int minCostToEqualizeArray1(int[] nums, int cost1, int cost2) {
         int mod = (int) (1e9 + 7);
 
         Arrays.sort(nums);
@@ -128,6 +128,46 @@ public class Contest4 {
 //        System.out.println(firstVal + " : " + n + " : " + res);
 
         return res;
+    }
+
+    public int minCostToEqualizeArray(int[] nums, int cost1, int cost2) {
+        int mod = (int) (1e9 + 7);
+        int n = nums.length;
+
+        Arrays.sort(nums);
+        long res = 0;
+        long suffixSum = -nums[0];
+        for (int i = 0; i < n; i++) {
+            res += (long) cost1 * (nums[n - 1] - nums[i]);
+            suffixSum += nums[i];
+        }
+
+        if (cost1 * 2 <= cost2 || n <= 2 || res == 0) {
+            return (int) (res % mod);
+        }
+
+        // 全部转化为 i+nums[n-1]（即最大为这个数）
+        for (int i = 0; i < nums[n - 1] + 2; i++) {
+            long first = i + nums[n - 1] - nums[0];
+            long other = ((long) (i + nums[n - 1]) * (n - 1)) - suffixSum;
+
+            long resTemp = 0;
+            // 第一个相差比后面的少，则全使用 cost2 一定只剩下 0/1 个
+            if (first <= other) {
+                resTemp = (long) cost2 * ((first + other) / 2);
+                if ((first + other) % 2 == 1) {
+                    resTemp += cost1;
+                }
+
+                // 第一个用不完，全使用 cost1 填补
+            } else {
+                resTemp = (long) cost2 * other + (long) cost1 * (first - other);
+            }
+
+            res = Math.min(res, resTemp);
+        }
+
+        return (int) (res % mod);
     }
 
 
