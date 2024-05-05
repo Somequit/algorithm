@@ -22,7 +22,7 @@ public class Contest3 {
     /**
      * @return
      */
-    public int minAnagramLength(String s) {
+    public int minAnagramLength1(String s) {
         int n = s.length();
         int[] wordCount = new int[26];
 
@@ -62,5 +62,39 @@ public class Contest3 {
         return res;
     }
 
+
+    public int minAnagramLength(String s) {
+        int n = s.length();
+        int res = n;
+
+        for (int i = 1; i < n; i++) {
+            if (n % i != 0) {
+                continue;
+            }
+
+            char[] charTemp = s.substring(0, i).toCharArray();
+            Arrays.sort(charTemp);
+            String strTemp = new String(charTemp);
+
+            boolean flag = true;
+            for (int j = i; j < n; j += i) {
+                char[] charTemp2 = s.substring(j, j + i).toCharArray();
+                Arrays.sort(charTemp2);
+
+                if (!strTemp.equals(new String(charTemp2))) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag) {
+                res = i;
+                break;
+            }
+
+        }
+
+        return res;
+    }
 
 }
