@@ -1,6 +1,7 @@
 package template;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -21,6 +22,23 @@ public class Algorithm {
 
         // 创建集合数组
         createCollectionArrayByStream();
+
+        // 元音、数组、大小写字母判断
+        checkVowel();
+    }
+
+    private static void checkVowel() {
+        Set<Character> setLowerVowel = Arrays.stream(new Character[]{'a', 'e', 'i', 'o', 'u'}).collect(Collectors.toSet());
+        Set<Character> setUpperVowel = Arrays.stream(new Character[]{'A','E','I','O','U'}).collect(Collectors.toSet());
+        Set<Character> setLowerNotVowel = Arrays.stream(new Character[]{'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'}).collect(Collectors.toSet());
+        Set<Character> setUpperNotVowel = Arrays.stream(new Character[]{'B','C','D','F','G','H','J','K','L','M','N','P','Q','R','S','T','V','W','X','Y','Z'}).collect(Collectors.toSet());
+        Set<Character> setNums = Arrays.stream(new Character[]{'0','1','2','3','4','5','6','7','8','9'}).collect(Collectors.toSet());
+
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (!setLowerVowel.contains((char)(c - 'A' + 'a'))) {
+                System.out.print("\'" + c + "\'" + ",");
+            }
+        }
     }
 
     private static void createCollectionArrayByStream() {
