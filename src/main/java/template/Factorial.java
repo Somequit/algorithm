@@ -47,10 +47,11 @@ public class Factorial {
     }
 
     // 组合数
+    private static final int COMB_MX = 5001;
     private static final long[][] COMBINATION;
 
     static {
-        COMBINATION = new long[5001][5001];
+        COMBINATION = new long[COMB_MX][COMB_MX];
 
         for (int i = 0; i < COMBINATION.length; i++) {
             COMBINATION[i][0] = 1;
