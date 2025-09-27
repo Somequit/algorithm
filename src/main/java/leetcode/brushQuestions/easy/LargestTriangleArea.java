@@ -8,7 +8,7 @@ package leetcode.brushQuestions.easy;
 public class LargestTriangleArea {
 
     /**
-     * 枚举任意不同三点，通过平方差公式求出三边长，在通过海伦公式求出面积
+     * 枚举任意不同三点，通过平方差公式求出三边长，在通过海伦-秦九昭公式求出面积/通过向量叉积求出面积
      * 如果无法构成三角形（形成线段）则面积为 0
      * 但是 double 可能导致精度问题从而变成负数然后求平方根，因此需要剔除这种情况；也可以判断如果是负数开更就直接返回 0.0
      * @param points
@@ -35,7 +35,11 @@ public class LargestTriangleArea {
 //                        continue;
 //                    }
 
-                    res = Math.max(res, getTriangleArea(sideA, sideB, sideC));
+                    // 通过海伦-秦九昭公式求出面积
+//                    res = Math.max(res, getTriangleArea(sideA, sideB, sideC));
+
+                    // 通过向量叉积求出面积
+                    res = Math.max(res, getTriangleArea2(points[i], points[j], points[k]));
                 }
             }
         }
@@ -44,7 +48,22 @@ public class LargestTriangleArea {
     }
 
     /**
-     * 通过海伦公式求出面积
+     * 通过向量叉积求出面积
+     */
+    private double getTriangleArea2(int[] point1, int[] point2, int[] point3) {
+        // p1->p2
+        int x1 = point2[0] - point1[0];
+        int y1 = point2[1] - point1[1];
+        // p1->p3
+        int x2 = point3[0] - point1[0];
+        int y2 = point3[1] - point1[1];
+
+        // 叉积的计算公式
+        return Math.abs(x1 * y2 - x2 * y1) / 2.0;
+    }
+
+    /**
+     * 通过海伦-秦九昭公式求出面积
      * @param sideA
      * @param sideB
      * @param sideC
@@ -53,7 +72,7 @@ public class LargestTriangleArea {
     private double getTriangleArea(double sideA, double sideB, double sideC) {
         // 半周长
         double p = (sideA + sideB + sideC) / 2.0;
-        Double res =  Math.sqrt(p * (p-sideA) * (p-sideB) * (p-sideC));
+        double res =  Math.sqrt(p * (p-sideA) * (p-sideB) * (p-sideC));
         // 也可以判断如果是负数开更就直接返回 0.0
         if(Double.isNaN(res)) {
             res = 0.0;
@@ -67,7 +86,7 @@ public class LargestTriangleArea {
      * @return
      */
     private double getDistByPoint(int[] pointA, int[] pointB) {
-        Double res = Math.sqrt(Math.pow((pointA[0] - pointB[0]), 2) + Math.pow((pointA[1] - pointB[1]), 2));
+        double res = Math.sqrt(Math.pow((pointA[0] - pointB[0]), 2) + Math.pow((pointA[1] - pointB[1]), 2));
         // 也可以判断如果是负数开更就直接返回 0.0
         if(Double.isNaN(res)) {
             res = 0.0;
