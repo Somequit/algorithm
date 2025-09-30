@@ -3,6 +3,9 @@ package template;
 /**
  * @author gusixue
  * @description 组合数模板：阶乘、逆元模板与排列 C(n,k)
+ * TODO:GSX: 求逆元：
+ * https://leetcode.cn/discuss/post/3584387/fen-xiang-gun-mo-yun-suan-de-shi-jie-dan-7xgu/
+ * https://leetcode.cn/problems/find-triangular-sum-of-an-array/solutions/1390137/o-by-endlesscheng-952i/?envType=daily-question&envId=2025-09-30
  * @date 2023/12/3
  */
 public class Factorial {
