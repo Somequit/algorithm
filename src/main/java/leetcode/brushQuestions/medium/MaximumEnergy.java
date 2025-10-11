@@ -8,7 +8,7 @@ package leetcode.brushQuestions.medium;
 public class MaximumEnergy {
 
     /**
-     * 倒序处理+dp 存储
+     * 倒序处理+dp 存储maximumTotalDamage
      */
     public int maximumEnergy(int[] energy, int k) {
         int n = energy.length;
