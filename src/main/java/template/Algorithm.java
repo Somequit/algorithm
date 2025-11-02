@@ -105,4 +105,18 @@ public class Algorithm {
     private static void stringBeforeAdd(String str, int len, String fill) {
         System.out.println(String.format("%" + len + "s", str).replace(" ", fill));
     }
+
+    private static long gcd(long a,long b){
+        while (a != 0) {
+            long tmp = a;
+            a = b % a;
+            b = tmp;
+        }
+        return b;
+    }
+
+    // 先除后乘，避免溢出
+    private static long lcm(long a, long b) {
+        return a / gcd(a, b) * b;
+    }
 }
