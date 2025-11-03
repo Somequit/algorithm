@@ -1,39 +1,66 @@
-package codefroces;
+package codefroces.contest.Testing_Round_20;
 
 import java.io.*;
 import java.util.StringTokenizer;
 
 /**
  * @author gusixue
- * @description 交互问题模板
- * @date 2025/11/4 12:11 上午
+ * @description A2. Encode and Decode (Hard Version)
+ * @date 2025/10/21 10:37 上午
  */
-public class MainCommunication {
+public class Contest2 {
+
+    /**
+     * 七个字符代表一个数字
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         String purpose = scanString();
 
         if (purpose.equals("first")) {
             int n = scanInt();
+            int[] arr = scanIntArray(n);
 
-            String res = solveFirst(n);
+            String res = solveFirst(n, arr);
 
             print(res);
 
         } else {
             String str = scanString();
 
-            int res = solveSecond(str);
+            int[] res = solveSecond(str);
 
-            print(res);
+            print(res.length);
+            printArray(res);
         }
     }
 
-    private static String solveFirst(int n) {
-        return "";
+    private static int[] solveSecond(String str) {
+        int[] res = new int[str.length() / 7];
+
+        for (int i = 0; i < str.length(); i+=7) {
+            int curNum = 0;
+            for (int j = i; j < i + 7; j++) {
+                curNum += (str.charAt(j) - 'a') * Math.pow(26, j - i);
+            }
+            res[i / 7] = curNum;
+        }
+
+        return res;
     }
 
-    private static int solveSecond(String str) {
-        return 0;
+    private static String solveFirst(int n, int[] arr) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int num : arr) {
+            int temp = num;
+            for (int i = 0; i < 7; i++) {
+                stringBuilder.append((char) (temp % 26 + 'a'));
+                temp /= 26;
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
     static int MOD = 1_000_000_007;
@@ -94,3 +121,4 @@ public class MainCommunication {
         bw.flush();
     }
 }
+

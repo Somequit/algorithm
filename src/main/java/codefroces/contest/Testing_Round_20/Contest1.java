@@ -1,40 +1,54 @@
-package codefroces;
+package codefroces.contest.Testing_Round_20;
 
 import java.io.*;
 import java.util.StringTokenizer;
 
 /**
  * @author gusixue
- * @description 交互问题模板
- * @date 2025/11/4 12:11 上午
+ * @description A1. Encode and Decode (Easy Version)
+ * @date 2025/10/21 10:37 上午
  */
-public class MainCommunication {
+public class Contest1 {
     public static void main(String[] args) throws IOException {
         String purpose = scanString();
 
         if (purpose.equals("first")) {
             int n = scanInt();
+            int[] arr = scanIntArray(n);
 
-            String res = solveFirst(n);
+            String res = solveFirst(n, arr);
 
             print(res);
 
         } else {
             String str = scanString();
 
-            int res = solveSecond(str);
+            int[] res = solveSecond(str);
 
-            print(res);
+            print(res.length);
+            printArray(res);
         }
     }
 
-    private static String solveFirst(int n) {
-        return "";
+    private static int[] solveSecond(String str) {
+        int[] res = new int[str.length()];
+
+        for (int i = 0; i < str.length(); i++) {
+            res[i] = str.charAt(i) - 'a' + 1;
+        }
+
+        return res;
     }
 
-    private static int solveSecond(String str) {
-        return 0;
+    private static String solveFirst(int n, int[] arr) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int num : arr) {
+            stringBuilder.append((char) (num - 1 + 'a'));
+        }
+
+        return stringBuilder.toString();
     }
+
 
     static int MOD = 1_000_000_007;
     static int INF = (int) 1e9;
