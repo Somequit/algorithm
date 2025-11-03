@@ -5,10 +5,10 @@ package leetcode.brushQuestions.rating_2200;
  * @description 3130. 找出所有稳定的二进制数组 II
  * @date 2025/11/2 6:02 下午
  */
-public class NumberOfStableArrays_2825_1 {
+public class NumberOfStableArrays_2825 {
 
     public static void main(String[] args) {
-        (new NumberOfStableArrays_2825_1()).numberOfStableArrays(3, 3, 2);
+        (new NumberOfStableArrays_2825()).numberOfStableArrays(3, 3, 2);
     }
 
     /**

@@ -1,16 +1,14 @@
 package leetcode.brushQuestions.rating_2200;
 
-import java.util.Arrays;
-
 /**
  * @author gusixue
  * @description 3129. 找出所有稳定的二进制数组 I
  * @date 2025/11/2 3:10 下午
  */
-public class NumberOfStableArrays_2200_1 {
+public class NumberOfStableArrays_2200 {
 
     public static void main(String[] args) {
-        (new NumberOfStableArrays_2200_1()).numberOfStableArrays(3, 3, 2);
+        (new NumberOfStableArrays_2200()).numberOfStableArrays(3, 3, 2);
     }
 
     /**
