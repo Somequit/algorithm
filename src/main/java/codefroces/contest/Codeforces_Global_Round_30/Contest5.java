@@ -1,6 +1,7 @@
 package codefroces.contest.Codeforces_Global_Round_30;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -9,24 +10,137 @@ import java.util.StringTokenizer;
  * @date 2025/10/21 10:37 上午
  */
 public class Contest5 {
-    public static void main(String[] args) throws IOException {
-        int t = scanInt();
+//    public static void main(String[] args) throws IOException {
+//        int t = scanInt();
+//
+//        while (t > 0) {
+//            int n = scanInt();
+//            int m = scanInt();
+//            int[] u = new int[m];
+//            int[] v = new int[m];
+//            int[] w = new int[m];
+//            for (int i = 0; i < m; i++) {
+//                u[i] = scanInt();
+//                v[i] = scanInt();
+//                w[i] = scanInt();
+//            }
+//
+//            long res = solve(n, m, u, v, w);
+//
+//            print(res);
+//
+//            t--;
+//        }
+//    }
+//
+//    private static long solve(int n, int m, int[] u, int[] v, int[] w) {
+//        long res = 0;
+//        int[] degree = new int[n + 1];
+//        for (int i = 0; i < m; i++) {
+//            res += w[i];
+//            degree[u[i] - 1]++;
+//            degree[v[i] - 1]++;
+//        }
+//
+//        int[] oddDegree = new int[n];
+//        boolean flagEvenAll = true;
+//        for (int i = 0; i < n; i++) {
+//            if (degree[i] % 2 == 1) {
+//                oddDegree[i] = 1;
+//                flagEvenAll = false;
+//            }
+//        }
+//        if (flagEvenAll) {
+//            return res;
+//        }
+////        System.out.println(Arrays.toString(oddDegree));
+//
+//        int[] minW = new int[m];
+//        DSU dsuSearch = new DSU(n);
+//        int maxWNum = w[0];
+//        for (int i = 0; i < m; i++) {
+//            minW[i] = w[i];
+//            dsuSearch.union(u[i] - 1, v[i] - 1);
+//
+//            if (w[i] < maxWNum) {
+//                for (int j = 0; j < i; j++) {
+//                    if (dsuSearch.find(u[j] - 1) == dsuSearch.find(u[i] - 1)) {
+//                        minW[j] = Math.min(minW[j], w[i]);
+//                    }
+//                }
+//
+//            } else {
+//                maxWNum = w[i];
+//            }
+//        }
+////        System.out.println(Arrays.toString(minW));
+//
+//        DSU dsu = new DSU(n, oddDegree);
+//
+//        for (int i = 0; i < m; i++) {
+//            long addW = dsu.union(u[i] - 1, v[i] - 1) / 2;
+//            res += addW * minW[i];
+////            System.out.println(i + " : " + addW);
+//        }
+//
+//        return res;
+//    }
 
-        while (t > 0) {
-            int n = scanInt();
-            int[] a = scanIntArray(n);
 
-            int res = solve(n, a);
+    static class DSU {
+        // 代价为集合中所有边按位与
+        private final int[] cost;
+        private final int[] parent;
+        private final int size;
 
-            print(res);
+        public DSU(int n) {
+            this.size = n;
 
-            t--;
+            parent = new int[n];
+            cost = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parent[i] = i;
+            }
+        }
+
+        public DSU(int n, int[] costOut) {
+            this.size = n;
+
+            parent = new int[n];
+            cost = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parent[i] = i;
+                cost[i] = costOut[i];
+            }
+        }
+
+        public int find(int x) {
+            if (parent[x] != x) {
+                // 路径压缩
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
+        }
+
+        public int union(int u, int v) {
+            int xAncestor = find(u);
+            int yAncestor = find(v);
+            parent[xAncestor] = yAncestor;
+
+            if (xAncestor != yAncestor) {
+                cost[yAncestor] += cost[xAncestor];
+            }
+
+            int res = cost[yAncestor];
+            cost[yAncestor] %= 2;
+            return res;
+        }
+
+        public int getCostByIndex(int index) {
+            return cost[index];
         }
     }
 
-    public static int solve(int n, int[] a) throws IOException {
-        return 0;
-    }
 
     static int MOD = 1_000_000_007;
     static int INF = (int) 1e9;
