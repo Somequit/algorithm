@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @description 3306. 元音辅音字符串计数 II
  * @date 2025/11/3 11:48 上午
  */
-public class score_2200_CountOfSubstrings {
+public class Score_2200_CountOfSubstrings {
 
     /**
      * 从 i 开始最近l到最远r(不含)可到某个位置，即 [i，l）符合要求的最短字符串，[i，r）符合要求的最长字符串

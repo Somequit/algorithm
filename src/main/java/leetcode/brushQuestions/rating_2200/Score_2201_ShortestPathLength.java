@@ -10,7 +10,7 @@ import java.util.Set;
  * @description 847. 访问所有节点的最短路径
  * @date 2025/11/3 3:28 下午
  */
-public class score_2201_ShortestPathLength {
+public class Score_2201_ShortestPathLength {
 
     /**
      * 枚举起始点，BFS 暴力求结果，每个点压缩到 int 中作去重
