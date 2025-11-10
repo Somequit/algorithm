@@ -12,14 +12,22 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int t = scanInt();
 
-        String res = solve(t);
+        while (t > 0) {
+            int n = scanInt();
+            int[] a = scanIntArray(n);
 
-        print(res);
+            boolean res = solve(n, a);
+
+            print(res ? "YES" : "NO");
+
+            t--;
+        }
     }
 
-    public static String solve(int t) throws IOException {
-        return "";
+    private static boolean solve(int n, int[] a) {
+        return false;
     }
+
 
     static int MOD = 1_000_000_007;
     static int INF = (int) 1e9;
