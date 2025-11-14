@@ -10,6 +10,13 @@ import java.util.*;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
+
+        int nn = 100;
+        while (nn > 3) {
+            nn -= nn / 3;
+            System.out.println(nn);
+        }
+
         int t = scanInt();
 
         while (t > 0) {
