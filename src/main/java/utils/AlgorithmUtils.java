@@ -169,6 +169,19 @@ public class AlgorithmUtils {
     }
 
     /**
+     * 输出数组
+     */
+    public static void systemOutArray(long[] array){
+        if(array == null){
+            throw new RuntimeException("array is null!");
+        }
+        for (long anArray : array) {
+            System.out.print(anArray + " ");
+        }
+        System.out.println();
+    }
+
+    /**
      * 输出二维数组
      */
     public static void systemOutArray(int[][] array){
