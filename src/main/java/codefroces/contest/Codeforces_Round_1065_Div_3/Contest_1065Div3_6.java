@@ -1,38 +1,27 @@
-package codefroces;
+package codefroces.contest.Codeforces_Round_1065_Div_3;
 
 import java.io.*;
 import java.util.*;
 
 /**
  * @author gusixue
- * @description 模板
- * @date 2025/10/21 10:37 上午
+ * @description
+ * @date 2025/11/18 10:55 下午
  */
-public class Main {
+public class Contest_1065Div3_6 {
     public static void main(String[] args) throws IOException {
-
-        int nn = 100;
-        while (nn > 3) {
-            nn -= nn / 3;
-            System.out.println(nn);
-        }
-
         int t = scanInt();
 
         while (t > 0) {
             int n = scanInt();
-            int[] a = scanIntArray(n);
+            String s = scanString();
 
-            boolean res = solve(n, a);
-
-            print(res ? "YES" : "NO");
+//            int res = solve(n, s);
+//
+//            print(res);
 
             t--;
         }
-    }
-
-    private static boolean solve(int n, int[] a) {
-        return false;
     }
 
 
