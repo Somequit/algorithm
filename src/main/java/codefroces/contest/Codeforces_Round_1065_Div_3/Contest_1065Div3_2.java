@@ -14,14 +14,32 @@ public class Contest_1065Div3_2 {
 
         while (t > 0) {
             int n = scanInt();
-            String s = scanString();
+            int[] a = scanIntArray(n);
 
-//            int res = solve(n, s);
-//
-//            print(res);
+            int[] res = solve(n, a);
+
+            print(Math.abs(res[0] - res[n - 1]));
+            printArray(res);
 
             t--;
         }
+    }
+
+    private static int[] solve(int n, int[] a) {
+        int[] res = new int[n];
+        if (a[0] == -1 && a[n - 1] == -1) {
+            res[0] = 0;
+            res[n - 1] = 0;
+
+        } else {
+            res[0] = a[0] == -1 ? a[n - 1] : a[0];
+            res[n - 1] = a[n - 1] == -1 ? a[0] : a[n - 1];
+        }
+
+        for (int i = 1; i < n - 1; i++) {
+            res[i] = a[i] == -1 ? 0 : a[i];
+        }
+        return res;
     }
 
 

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * @author gusixue
- * @description
+ * @description TODO:GSX:
  * @date 2025/11/18 10:55 下午
  */
 public class Contest_1065Div3_5 {
@@ -14,14 +14,29 @@ public class Contest_1065Div3_5 {
 
         while (t > 0) {
             int n = scanInt();
-            String s = scanString();
+            int[] p = scanIntArray(n);
 
-//            int res = solve(n, s);
-//
-//            print(res);
+            boolean res = solve(n, p);
+
+            print(res ? "Yes" : "No");
 
             t--;
         }
+    }
+
+    private static boolean solve(int n, int[] p) {
+        Deque<Integer> stackMin = new LinkedList<>();
+        stackMin.push(p[0]);
+        for (int i = 1; i < n; i++) {
+            int curMin = p[i];
+            while (!stackMin.isEmpty() && stackMin.peekFirst() < p[i]) {
+                curMin = Math.min(stackMin.pollFirst(), curMin);
+            }
+
+            stackMin.push(curMin);
+        }
+
+        return stackMin.size() <= 1;
     }
 
 

@@ -14,14 +14,35 @@ public class Contest_1065Div3_3 {
 
         while (t > 0) {
             int n = scanInt();
-            String s = scanString();
+            int[] a = scanIntArray(n);
+            int[] b = scanIntArray(n);
 
-//            int res = solve(n, s);
-//
-//            print(res);
+            int res = solve(n, a, b);
+
+            print(res == 0 ? "Tie" : (res == 1 ? "Ajisai" : "Mai"));
 
             t--;
         }
+    }
+
+    private static int solve(int n, int[] a, int[] b) {
+        long totalA = 0;
+        long totalB = 0;
+        for (int i = 0; i < n; i++) {
+            totalA += a[i];
+            totalB += b[i];
+        }
+        if ((totalA + totalB) % 2 == 0) {
+            return 0;
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            if (a[i] != b[i]) {
+                return i % 2 == 0 ? 1 : -1;
+            }
+        }
+
+        return totalA % 2 == 1 ? 1 : -1;
     }
 
 

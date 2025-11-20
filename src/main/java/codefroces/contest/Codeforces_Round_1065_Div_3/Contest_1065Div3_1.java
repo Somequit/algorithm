@@ -14,14 +14,22 @@ public class Contest_1065Div3_1 {
 
         while (t > 0) {
             int n = scanInt();
-            String s = scanString();
 
-//            int res = solve(n, s);
+            int res = solve(n);
 //
-//            print(res);
+            print(res);
 
             t--;
         }
+    }
+
+    private static int solve(int n) {
+        if (n % 2 == 1) {
+            return 0;
+        }
+        n /= 2;
+
+        return n / 2 + 1;
     }
 
 

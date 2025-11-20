@@ -14,14 +14,44 @@ public class Contest_1065Div3_7 {
 
         while (t > 0) {
             int n = scanInt();
-            String s = scanString();
+            int[] p = scanIntArray(n);
 
-//            int res = solve(n, s);
-//
-//            print(res);
+            List<int[]> res = solve(n, p);
+
+            if (res == null) {
+                print("No");
+
+            } else {
+                print("Yes");
+                for (int[] resTemp : res) {
+                    printArray(resTemp);
+                }
+            }
 
             t--;
         }
+    }
+
+    private static List<int[]> solve(int n, int[] p) {
+        List<int[]> res = new ArrayList<>();
+
+        Deque<Integer> stackMin = new LinkedList<>();
+        stackMin.push(p[0]);
+        for (int i = 1; i < n; i++) {
+            int curMin = p[i];
+            while (!stackMin.isEmpty() && stackMin.peekFirst() < p[i]) {
+                res.add(new int[]{p[i], stackMin.peekFirst()});
+                curMin = Math.min(stackMin.pollFirst(), curMin);
+            }
+
+            stackMin.push(curMin);
+        }
+
+        if (stackMin.size() > 1) {
+            return null;
+        }
+
+        return res;
     }
 
 
