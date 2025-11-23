@@ -1,31 +1,73 @@
-package codefroces;
+package codefroces.contest.ICPC_2025_Chengdu_Huawei_Cup;
 
 import java.io.*;
 import java.util.*;
 
 /**
  * @author gusixue
- * @description 模板
- * @date 2025/10/21 10:37 上午
+ * @description
+ * @date 2025/11/23 4:44 上午
  */
-public class Main {
+public class J_Judging_Papers {
+
     public static void main(String[] args) throws IOException {
         int t = scanInt();
 
         while (t > 0) {
             int n = scanInt();
-            int[] a = scanIntArray(n);
+            int m = scanInt();
+            int k = scanInt();
+            int b = scanInt();
+            int[][] score = new int[n][m];
+            for (int i = 0; i < n; i++) {
+                score[i] = scanIntArray(m);
+            }
 
-            boolean res = solve(n, a);
+            int res = solve(n, m, k, b, score);
 
-            print(res ? "YES" : "NO");
+            print(res);
 
             t--;
         }
     }
 
-    private static boolean solve(int n, int[] a) {
-        return false;
+    private static int solve(int n, int m, int k, int b, int[][] score) {
+        int res = 0;
+        int listNeedCnt = 0;
+
+        for (int i = 0; i < n; i++) {
+            int totalScore = 0;
+            for (int j = 0; j < m; j++) {
+                totalScore += score[i][j];
+            }
+
+            if (totalScore >= k) {
+                res++;
+
+            } else {
+                totalScore = 0;
+
+                for (int j = 0; j < m; j++) {
+                    if (score[i][j] > 0) {
+                        score[i][j]--;
+
+                    } else {
+                        score[i][j]++;
+                    }
+
+                    totalScore += score[i][j];
+                }
+
+                if (totalScore >= k) {
+                    listNeedCnt++;
+                }
+            }
+        }
+
+//        System.out.println(listNeedCnt + " : " + res);
+
+
+        return res + Math.min(b, listNeedCnt);
     }
 
 

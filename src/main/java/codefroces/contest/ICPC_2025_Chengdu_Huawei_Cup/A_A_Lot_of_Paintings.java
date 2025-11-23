@@ -1,33 +1,79 @@
-package codefroces;
+package codefroces.contest.ICPC_2025_Chengdu_Huawei_Cup;
 
 import java.io.*;
 import java.util.*;
 
 /**
  * @author gusixue
- * @description 模板
- * @date 2025/10/21 10:37 上午
+ * @description
+ * @date 2025/11/23 7:43 上午
  */
-public class Main {
+public class A_A_Lot_of_Paintings {
     public static void main(String[] args) throws IOException {
         int t = scanInt();
 
         while (t > 0) {
             int n = scanInt();
-            int[] a = scanIntArray(n);
+            int[] d = scanIntArray(n);
 
-            boolean res = solve(n, a);
+            int[] res = solve(n, d);
 
-            print(res ? "YES" : "NO");
+            if (res == null) {
+                print("NO");
+            } else {
+                print("YES");
+                printArray(res);
+            }
 
             t--;
         }
     }
 
-    private static boolean solve(int n, int[] a) {
-        return false;
-    }
+    private static int[] solve(int n, int[] d) {
+        int[] res = new int[n];
+        int total = 0;
+        int noNegCnt = 0;
+        for (int i = 0; i < n; i++) {
+            total += d[i];
+            noNegCnt += d[i] > 0 ? 1 : 0;
+        }
 
+        if (total == 100) {
+            for (int i = 0; i < n; i++) {
+                res[i] = d[i];
+            }
+            return res;
+
+            // 大于 100 将 d 中大于0 元素统一减 (total-100)/noNegCnt，需要判断是否减大于 0.5
+            // 为了避免精度可以统一 *noNegCnt，结果为 noNegCnt * d - (total - 100)
+        } else if (total > 100) {
+            // *10 避免精度误差
+            if ((total * 10 - 1000 + noNegCnt - 1) / noNegCnt > 5) {
+                return null;
+            }
+
+            for (int i = 0; i < n; i++) {
+                if (d[i] > 0) {
+                    res[i] = noNegCnt * d[i] - (total - 100);
+                }
+            }
+            return res;
+
+            // 小于 100 所有元素统一加 (100-total)/n，需要判断是否加大于等于 0.5
+            // 为了避免精度可以统一 *noNegCnt，结果为 n * d + (100 - total)
+        } else {
+            // *10 避免精度误差
+            if ((1000 - total * 10) / n >= 5) {
+                return null;
+            }
+
+            for (int i = 0; i < n; i++) {
+                res[i] = d[i] * n + (100 - total);
+            }
+
+            return res;
+        }
+    }
 
     static int MOD = 1_000_000_007;
     static int INF = (int) 1e9;

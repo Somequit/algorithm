@@ -1,31 +1,46 @@
-package codefroces;
+package codefroces.contest.ICPC_2025_Chengdu_Huawei_Cup;
 
 import java.io.*;
-import java.util.*;
+import java.util.StringTokenizer;
 
 /**
  * @author gusixue
- * @description 模板
- * @date 2025/10/21 10:37 上午
+ * @description
+ * @date 2025/11/23 5:50 上午
  */
-public class Main {
+public class G_GCD_of_Subsets {
+
     public static void main(String[] args) throws IOException {
         int t = scanInt();
 
         while (t > 0) {
-            int n = scanInt();
-            int[] a = scanIntArray(n);
+            long n = scanLong();
+            long k = scanLong();
+            long m = scanLong();
 
-            boolean res = solve(n, a);
+            long res = solve(n, k, m);
 
-            print(res ? "YES" : "NO");
+            print(res);
 
             t--;
         }
     }
 
-    private static boolean solve(int n, int[] a) {
-        return false;
+    private static long solve(long n, long k, long m) {
+        if (m == n) {
+            return n;
+        }
+
+        long matchCnt = (n / k - 1) / 2 * 2;
+        long surplusCnt = n - matchCnt - 1;
+        if (m <= surplusCnt) {
+            return m + matchCnt / 2 + 1;
+        }
+
+        long res = m + 1;
+        m -= surplusCnt;
+        matchCnt -= m;
+        return res + matchCnt / 2;
     }
 
 
