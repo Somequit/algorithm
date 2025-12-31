@@ -17,6 +17,7 @@ public class BFS {
      * BFS：(0,0) 到 (row-1, col-1) ，能够上下左右移动，相邻距离差不大于 maxHeight
      */
     private boolean bfs(int beginX, int beginY, int endX, int endY, int[][] heights, int maxHeight, int[][] vis) {
+        // TODO:GSX: Pair 改成 int
         Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
         queue.offer(new Pair<>(beginX, beginY));
 
