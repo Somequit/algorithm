@@ -26,28 +26,22 @@ public class PlusOne {
     /**
      * @return
      */
-    private int[] solution(int[] digits) {
-        List<Integer> resList = new ArrayList<>();
-        int carry = 1;
+    public int[] plusOne(int[] digits) {
+        List<Integer> listRes = new ArrayList<>();
 
+        int addNum = 1;
         for (int i = digits.length - 1; i >= 0; i--) {
-            if (digits[i] + carry > 9) {
-                resList.add((digits[i] + carry) % 10);
-
-            } else {
-                resList.add(digits[i] + carry);
-                carry = 0;
-            }
+            listRes.add((digits[i] + addNum) % 10);
+            addNum = (digits[i] + addNum) / 10;
         }
-        if (carry > 0) {
-            resList.add(carry);
+        if (addNum != 0) {
+            listRes.add(addNum);
         }
 
-        int[] res = new int[resList.size()];
-        for (int i = resList.size() - 1; i >= 0; i--) {
-            res[resList.size() - 1 - i] = resList.get(i);
+        int[] res = new int[listRes.size()];
+        for (int i = 0; i < listRes.size(); i++) {
+            res[listRes.size() - i - 1] = listRes.get(i);
         }
-
         return res;
     }
 
