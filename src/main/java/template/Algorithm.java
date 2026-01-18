@@ -35,10 +35,15 @@ public class Algorithm {
         Set<Character> setNums = Arrays.stream(new Character[]{'0','1','2','3','4','5','6','7','8','9'}).collect(Collectors.toSet());
 
         for (char c = 'a'; c <= 'z'; c++) {
-            if (!setLowerVowel.contains((char)(c - 'A' + 'a'))) {
+//            if (!setLowerVowel.contains((char)(c - 'A' + 'a'))) {
+//                System.out.print("\'" + c + "\'" + ",");
+//            }
+            if ("aeiou".indexOf(c) == -1) {
                 System.out.print("\'" + c + "\'" + ",");
             }
         }
+
+
     }
 
     private static void createCollectionArrayByStream() {
