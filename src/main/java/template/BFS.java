@@ -17,14 +17,14 @@ public class BFS {
      * BFS：(0,0) 到 (row-1, col-1) ，能够上下左右移动，相邻距离差不大于 maxHeight
      */
     private boolean bfs(int beginX, int beginY, int endX, int endY, int[][] heights, int maxHeight, int[][] vis) {
-        // TODO:GSX: Pair 改成 int
-        Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
-        queue.offer(new Pair<>(beginX, beginY));
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{beginX, beginY});
 
         while (!queue.isEmpty()) {
-            Pair<Integer, Integer> curPair = queue.poll();
-            int x = curPair.getKey();
-            int y = curPair.getValue();
+            int[] curQue = queue.poll();
+            int x = curQue[0];
+            int y = curQue[1];
 
             if (x == endX && y == endY) {
                 return true;
@@ -36,7 +36,7 @@ public class BFS {
 
                 if (checkPosition(x, y, xx, yy, heights, maxHeight, vis)) {
                     vis[xx][yy] = 1;
-                    queue.offer(new Pair<>(xx, yy));
+                    queue.offer(new int[]{xx, yy});
                 }
             }
         }
